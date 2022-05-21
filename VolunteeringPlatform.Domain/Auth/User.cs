@@ -1,0 +1,18 @@
+﻿using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VolunteeringPlatform.Domain.Entities;
+
+namespace VolunteeringPlatform.Domain.Auth
+{
+    public class User : IdentityUser<int>
+    {
+        public string FullName { get; set; }
+        public string? Description { get; set; }
+        public string? Locality { get; set; }
+        public virtual ICollection<GoodDeed> GoodDeeds { get; set; }
+    }
+}
