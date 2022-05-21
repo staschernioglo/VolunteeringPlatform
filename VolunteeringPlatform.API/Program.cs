@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using VolunteeringPlatform.API.Infrastructure.Extentions;
 using VolunteeringPlatform.Bll;
+using VolunteeringPlatform.Bll.Interfaces;
+using VolunteeringPlatform.Bll.Services;
 using VolunteeringPlatform.Dal;
 using VolunteeringPlatform.Dal.Interfaces;
 using VolunteeringPlatform.Dal.Repositories;
@@ -22,11 +26,15 @@ builder.Services.AddIdentity<User, Role>(options =>
 })
 .AddEntityFrameworkStores<VolunteeringPlatformDbContext>();
 
+builder.Services.Configure<IdentityOptions>(options =>
+    options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
+
 var authOptions = builder.Services.ConfigureAuthOptions(builder.Configuration);
 builder.Services.AddJwtAuthentication(authOptions);
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IRepository, BaseRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddAutoMapper(typeof(BllAssemblyMarker));
 builder.Services.AddSwagger(builder.Configuration);
 
