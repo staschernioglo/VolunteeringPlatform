@@ -13,15 +13,14 @@ namespace VolunteeringPlatform.API.Controllers
     [Route("api/projects")]
     public class ProjectsController : BaseController
     {
-        private readonly UserManager<User> _userManager;
         private readonly IProjectService _projectService;
 
-        public ProjectsController(UserManager<User> userManager, IProjectService projectService)
+        public ProjectsController(IProjectService projectService)
         {
             _projectService = projectService;
-            _userManager = userManager;
         }
 
+        [AllowAnonymous]
         [HttpPost("paginated-search")]
         public async Task<PaginatedResult<ProjectListDto>> GetPagedProjects(PagedRequest pagedRequest)
         {
@@ -29,6 +28,7 @@ namespace VolunteeringPlatform.API.Controllers
             return pagedProjectsDto;
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ProjectDto> GetProject(int id)
         {
@@ -36,7 +36,6 @@ namespace VolunteeringPlatform.API.Controllers
             return projectDto;
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateProject(ProjectForCreateDto projectForCreateDto)
         {
@@ -53,7 +52,6 @@ namespace VolunteeringPlatform.API.Controllers
             return CreatedAtAction(nameof(GetProject), new { id = projectDto.Id }, projectDto);
         }
 
-        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProject(int id, ProjectForUpdateDto projectForUpdateDto)
         {
@@ -66,7 +64,6 @@ namespace VolunteeringPlatform.API.Controllers
             return Ok();
         }
 
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task DeleteProject(int id)
         {

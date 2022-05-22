@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VolunteeringPlatform.Common.Dtos.Account;
+using VolunteeringPlatform.Common.Dtos.Volunteer;
 using VolunteeringPlatform.Domain.Auth;
 
 namespace VolunteeringPlatform.Bll.Profiles
@@ -16,6 +17,8 @@ namespace VolunteeringPlatform.Bll.Profiles
             CreateMap<VolunteerForRegisterDto, Volunteer>()
                 .ForMember(x => x.Description, y => y.MapFrom(s => s.PersonalInformation))
                 .ForMember(x => x.PasswordHash, y => y.MapFrom(s => s.Password));
+
+            CreateMap<Volunteer, VolunteerListDto>();
         }
     }
 }

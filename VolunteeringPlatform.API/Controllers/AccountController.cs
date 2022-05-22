@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using VolunteeringPlatform.API.Infrastructure.Configurations;
@@ -36,11 +37,15 @@ namespace VolunteeringPlatform.API.Controllers
 
             if (checkingPasswordResult.Succeeded)
             {
+                var user = await _userManager.FindByNameAsync(userForLoginDto.Username);
+                var userId = user.Id.ToString();
+                var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.NameId, userId) };
+
                 var signinCredentials = new SigningCredentials(_authenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
                 var jwtSecurityToken = new JwtSecurityToken(
                      issuer: _authenticationOptions.Issuer,
                      audience: _authenticationOptions.Audience,
-                     claims: new List<Claim>(),
+                     claims: claims,
                      expires: DateTime.Now.AddDays(30),
                      signingCredentials: signinCredentials
                 );

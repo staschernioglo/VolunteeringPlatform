@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VolunteeringPlatform.Domain.Auth;
-using VolunteeringPlatform.Domain.Entities;
 
-namespace VolunteeringPlatform.Common.Dtos.Project
+namespace VolunteeringPlatform.Common.Dtos.GoodDeed
 {
-    public class ProjectListDto
+    public class GoodDeedListDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
+        public string? Description { get; set; }
         public DateTime? Date { get; set; }
         public string? Locality { get; set; }
         public int? RequiredNumberOfVolunteers { get; set; }
         public int NumberOfParticipatingVolunteers { get; set; }
-        public string Organization { get; set; }
+
     }
 }
