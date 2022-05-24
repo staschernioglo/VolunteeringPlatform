@@ -23,16 +23,16 @@ namespace VolunteeringPlatform.Bll.Services
             _mapper = mapper;
         }
 
-        public async Task<OrganizationDto> GetOrganizationAsync(int id)
+        public async Task<OrganizationDto> GetOrganizationAsync(int id, CancellationToken cancellationToken)
         {
-            var organization = await _repository.GetByIdAsync<Organization>(id);
+            var organization = await _repository.GetByIdAsync<Organization>(id, cancellationToken);
             var organizationDto = _mapper.Map<OrganizationDto>(organization);
             return organizationDto;
         }
 
-        public async Task<PaginatedResult<OrganizationListDto>> GetPagedOrganizationsAsync(PagedRequest pagedRequest)
+        public async Task<PaginatedResult<OrganizationListDto>> GetPagedOrganizationsAsync(PagedRequest pagedRequest, CancellationToken cancellationToken)
         {
-            var pagedOrganizationsDto = await _repository.GetPagedDataAsync<Organization, OrganizationListDto>(pagedRequest);
+            var pagedOrganizationsDto = await _repository.GetPagedDataAsync<Organization, OrganizationListDto>(pagedRequest, cancellationToken);
             return pagedOrganizationsDto;
         }
     }

@@ -14,13 +14,13 @@ namespace VolunteeringPlatform.Dal.Extentions
 {
     public static class QueryableExtensions
     {
-        public async static Task<PaginatedResult<TDto>> CreatePaginatedResultAsync<TEntity, TDto>(this IQueryable<TEntity> query, PagedRequest pagedRequest, IMapper mapper)
+        public async static Task<PaginatedResult<TDto>> CreatePaginatedResultAsync<TEntity, TDto>(this IQueryable<TEntity> query, PagedRequest pagedRequest, IMapper mapper, CancellationToken cancellationToken)
             where TEntity : class
             where TDto : class
         {
             query = query.ApplyFilters(pagedRequest);
 
-            var total = await query.CountAsync();
+            var total = await query.CountAsync(cancellationToken);
 
             query = query.Paginate(pagedRequest);
 
@@ -28,7 +28,7 @@ namespace VolunteeringPlatform.Dal.Extentions
 
             projectionResult = projectionResult.Sort(pagedRequest);
 
-            var listResult = await projectionResult.ToListAsync();
+            var listResult = await projectionResult.ToListAsync(cancellationToken);
 
             return new PaginatedResult<TDto>()
             {

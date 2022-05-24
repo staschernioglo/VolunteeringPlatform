@@ -10,14 +10,14 @@ namespace VolunteeringPlatform.Bll.Interfaces
 {
     public interface IProjectService
     {
-        Task<PaginatedResult<ProjectListDto>> GetPagedProjectsAsync(PagedRequest pagedRequest);
+        Task<PaginatedResult<ProjectListDto>> GetPagedProjectsAsync(PagedRequest pagedRequest, CancellationToken cancellationToken);
 
-        Task<ProjectDto> GetProjectAsync(int id);
+        Task<ProjectDto> GetProjectAsync(int id, CancellationToken cancellationToken);
 
-        Task<ProjectDto> CreateProjectAsync(ProjectForCreateDto projectForCreateDto);
+        Task<ProjectDto> CreateProjectAsync(ProjectForCreateDto projectForCreateDto, CancellationToken cancellationToken);
 
-        Task UpdateProjectAsync(int id, ProjectForUpdateDto projectForUpdateDto);
+        Task UpdateProjectAsync(int id, ProjectForUpdateDto projectForUpdateDto, CancellationToken cancellationToken);
 
-        Task DeleteProjectAsync(int id);
+        Task DeleteProjectAsync(int id, CancellationToken cancellationToken);
     }
 }

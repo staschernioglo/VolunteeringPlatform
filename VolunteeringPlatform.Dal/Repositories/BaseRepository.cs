@@ -26,25 +26,25 @@ namespace VolunteeringPlatform.Dal.Repositories
             _mapper = mapper;
         }
 
-        public async Task<List<TEntity>> GetAllAsync<TEntity>() where TEntity : class
+        public async Task<List<TEntity>> GetAllAsync<TEntity>(CancellationToken cancellationToken) where TEntity : class
         {
-            return await _volunteeringPlatformDbContext.Set<TEntity>().ToListAsync();
+            return await _volunteeringPlatformDbContext.Set<TEntity>().ToListAsync(cancellationToken);
         }
 
-        public async Task<TEntity> GetByIdAsync<TEntity>(int id) where TEntity : class
+        public async Task<TEntity> GetByIdAsync<TEntity>(int id, CancellationToken cancellationToken) where TEntity : class
         {
-            return await _volunteeringPlatformDbContext.FindAsync<TEntity>(id);
+            return await _volunteeringPlatformDbContext.FindAsync<TEntity>(id, cancellationToken);
         }
 
-        public async Task<TEntity> GetByIdWithIncludeAsync<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : BaseEntity
+        public async Task<TEntity> GetByIdWithIncludeAsync<TEntity>(int id, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : BaseEntity
         {
             var query = IncludeProperties(includeProperties);
-            return await query.FirstOrDefaultAsync(entity => entity.Id == id);
+            return await query.FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
         }
 
-        public async Task SaveChangesAsync()
+        public async Task SaveChangesAsync(CancellationToken cancellationToken)
         {
-            await _volunteeringPlatformDbContext.SaveChangesAsync();
+            await _volunteeringPlatformDbContext.SaveChangesAsync(cancellationToken);
         }
 
         public void Add<TEntity>(TEntity entity) where TEntity : class
@@ -54,9 +54,9 @@ namespace VolunteeringPlatform.Dal.Repositories
                 .Add(entity);
         }
 
-        public async Task<TEntity> DeleteAsync<TEntity>(int id) where TEntity : class
+        public async Task<TEntity> DeleteAsync<TEntity>(int id, CancellationToken cancellationToken) where TEntity : class
         {
-            var entity = await _volunteeringPlatformDbContext.Set<TEntity>().FindAsync(id);
+            var entity = await _volunteeringPlatformDbContext.Set<TEntity>().FindAsync(id, cancellationToken);
             if (entity == null)
             {
                 throw new ValidationException($"Object of type {typeof(TEntity)} with id { id } not found");
@@ -67,10 +67,10 @@ namespace VolunteeringPlatform.Dal.Repositories
             return entity;
         }
 
-        public async Task<PaginatedResult<TDto>> GetPagedDataAsync<TEntity, TDto>(PagedRequest pagedRequest) where TEntity : class
+        public async Task<PaginatedResult<TDto>> GetPagedDataAsync<TEntity, TDto>(PagedRequest pagedRequest, CancellationToken cancellationToken) where TEntity : class
                                                                                                         where TDto : class
         {
-            return await _volunteeringPlatformDbContext.Set<TEntity>().CreatePaginatedResultAsync<TEntity, TDto>(pagedRequest, _mapper);
+            return await _volunteeringPlatformDbContext.Set<TEntity>().CreatePaginatedResultAsync<TEntity, TDto>(pagedRequest, _mapper, cancellationToken);
         }
 
         private IQueryable<TEntity> IncludeProperties<TEntity>(params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : class
@@ -82,10 +82,10 @@ namespace VolunteeringPlatform.Dal.Repositories
             }
             return entities;
         }
-        public async Task<TEntity> GetUserByIdWithIncludeAsync<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : User
+        public async Task<TEntity> GetUserByIdWithIncludeAsync<TEntity>(int id, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : User
         {
             var query = IncludeProperties(includeProperties);
-            return await query.FirstOrDefaultAsync(entity => entity.Id == id);
+            return await query.FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
         }
     }
 }

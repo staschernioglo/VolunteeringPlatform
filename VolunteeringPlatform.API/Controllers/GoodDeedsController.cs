@@ -21,22 +21,22 @@ namespace VolunteeringPlatform.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("paginated-search")]
-        public async Task<PaginatedResult<GoodDeedListDto>> GetPagedGoodDeeds(PagedRequest pagedRequest)
+        public async Task<PaginatedResult<GoodDeedListDto>> GetPagedGoodDeeds(PagedRequest pagedRequest, CancellationToken cancellationToken)
         {
-            var pagedGoodDeedsDto = await _goodDeedService.GetPagedGoodDeedsAsync(pagedRequest);
+            var pagedGoodDeedsDto = await _goodDeedService.GetPagedGoodDeedsAsync(pagedRequest, cancellationToken);
             return pagedGoodDeedsDto;
         }
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<GoodDeedDto> GetGoodDeed(int id)
+        public async Task<GoodDeedDto> GetGoodDeed(int id, CancellationToken cancellationToken)
         {
-            var goodDeedDto = await _goodDeedService.GetGoodDeedAsync(id);
+            var goodDeedDto = await _goodDeedService.GetGoodDeedAsync(id, cancellationToken);
             return goodDeedDto;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGoodDeed([FromForm]GoodDeedForCreateDto goodDeedForCreateDto)
+        public async Task<IActionResult> CreateGoodDeed([FromForm]GoodDeedForCreateDto goodDeedForCreateDto, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -46,27 +46,27 @@ namespace VolunteeringPlatform.API.Controllers
             var userId = User.GetLoggedInUserId();
             goodDeedForCreateDto.UserId = userId;
 
-            var goodDeedDto = await _goodDeedService.CreateGoodDeedAsync(goodDeedForCreateDto);
+            var goodDeedDto = await _goodDeedService.CreateGoodDeedAsync(goodDeedForCreateDto, cancellationToken);
 
             return CreatedAtAction(nameof(GetGoodDeed), new { id = goodDeedDto.Id }, goodDeedDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGoodDeed(int id, GoodDeedForUpdateDto goodDeedForUpdateDto)
+        public async Task<IActionResult> UpdateGoodDeed(int id, GoodDeedForUpdateDto goodDeedForUpdateDto, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _goodDeedService.UpdateGoodDeedAsync(id, goodDeedForUpdateDto);
+            await _goodDeedService.UpdateGoodDeedAsync(id, goodDeedForUpdateDto, cancellationToken);
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task DeleteGoodDeed(int id)
+        public async Task DeleteGoodDeed(int id, CancellationToken cancellationToken)
         {
-            await _goodDeedService.DeleteGoodDeedAsync(id);
+            await _goodDeedService.DeleteGoodDeedAsync(id, cancellationToken);
         }
 
     }

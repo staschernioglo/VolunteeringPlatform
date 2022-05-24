@@ -21,14 +21,14 @@ namespace VolunteeringPlatform.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("paginated-search")]
-        public async Task<PaginatedResult<VolunteerListDto>> GetPagedVolunteers(PagedRequest pagedRequest)
+        public async Task<PaginatedResult<VolunteerListDto>> GetPagedVolunteers(PagedRequest pagedRequest, CancellationToken cancellationToken)
         {
-            var pagedVolunteersDto = await _volunteerService.GetPagedVolunteersAsync(pagedRequest);
+            var pagedVolunteersDto = await _volunteerService.GetPagedVolunteersAsync(pagedRequest, cancellationToken);
             return pagedVolunteersDto;
         }
 
         [HttpPost("{projectId}")]
-        public async Task<IActionResult> ParticipateInProject(int projectId)
+        public async Task<IActionResult> ParticipateInProject(int projectId, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -37,12 +37,12 @@ namespace VolunteeringPlatform.API.Controllers
 
             var volunteerId = User.GetLoggedInUserId();
 
-            await _volunteerService.ParticipateInProjectAsync(projectId, volunteerId);
+            await _volunteerService.ParticipateInProjectAsync(projectId, volunteerId, cancellationToken);
             return Ok();
         }
 
         [HttpPost("{goodDeedId}")]
-        public async Task<IActionResult> ParticipateInGoodDeed(int goodDeedId)
+        public async Task<IActionResult> ParticipateInGoodDeed(int goodDeedId, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -51,7 +51,7 @@ namespace VolunteeringPlatform.API.Controllers
 
             var volunteerId = User.GetLoggedInUserId();
 
-            await _volunteerService.ParticipateInProjectAsync(goodDeedId, volunteerId);
+            await _volunteerService.ParticipateInProjectAsync(goodDeedId, volunteerId, cancellationToken);
             return Ok();
         }
     }

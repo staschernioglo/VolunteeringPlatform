@@ -22,22 +22,22 @@ namespace VolunteeringPlatform.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("paginated-search")]
-        public async Task<PaginatedResult<ProjectListDto>> GetPagedProjects(PagedRequest pagedRequest)
+        public async Task<PaginatedResult<ProjectListDto>> GetPagedProjects(PagedRequest pagedRequest, CancellationToken cancellationToken)
         {
-            var pagedProjectsDto = await _projectService.GetPagedProjectsAsync(pagedRequest);
+            var pagedProjectsDto = await _projectService.GetPagedProjectsAsync(pagedRequest, cancellationToken);
             return pagedProjectsDto;
         }
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ProjectDto> GetProject(int id)
+        public async Task<ProjectDto> GetProject(int id, CancellationToken cancellationToken)
         {
-            var projectDto = await _projectService.GetProjectAsync(id);
+            var projectDto = await _projectService.GetProjectAsync(id, cancellationToken);
             return projectDto;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProject([FromForm]ProjectForCreateDto projectForCreateDto)
+        public async Task<IActionResult> CreateProject([FromForm]ProjectForCreateDto projectForCreateDto, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -47,27 +47,27 @@ namespace VolunteeringPlatform.API.Controllers
             var organizationId = User.GetLoggedInUserId();
             projectForCreateDto.OrganizationId = organizationId;
 
-            var projectDto = await _projectService.CreateProjectAsync(projectForCreateDto);
+            var projectDto = await _projectService.CreateProjectAsync(projectForCreateDto, cancellationToken);
 
             return CreatedAtAction(nameof(GetProject), new { id = projectDto.Id }, projectDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProject(int id, ProjectForUpdateDto projectForUpdateDto)
+        public async Task<IActionResult> UpdateProject(int id, ProjectForUpdateDto projectForUpdateDto, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _projectService.UpdateProjectAsync(id, projectForUpdateDto);
+            await _projectService.UpdateProjectAsync(id, projectForUpdateDto, cancellationToken);
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task DeleteProject(int id)
+        public async Task DeleteProject(int id, CancellationToken cancellationToken)
         {
-            await _projectService.DeleteProjectAsync(id);
+            await _projectService.DeleteProjectAsync(id, cancellationToken);
         }
     }
 }

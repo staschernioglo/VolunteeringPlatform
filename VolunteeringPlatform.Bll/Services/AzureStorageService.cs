@@ -20,7 +20,7 @@ namespace VolunteeringPlatform.Bll.Services
             _connectionString = configuration.GetConnectionString("BlobConnectionString");
         }
 
-        public async Task<BlobResponseDto> UploadAsync(IFormFile file, string containerName)
+        public async Task<BlobResponseDto> UploadAsync(IFormFile file, string containerName, CancellationToken cancellationToken)
         {
             BlobContainerClient containerClient = new BlobContainerClient(_connectionString, containerName);
             var response = new BlobResponseDto();
@@ -32,7 +32,7 @@ namespace VolunteeringPlatform.Bll.Services
             
                 await using (Stream stream = file.OpenReadStream())
                 {
-                    await blob.UploadAsync(stream);
+                    await blob.UploadAsync(stream, cancellationToken);
                 }
                 response.ImageUrl = blob.Uri.AbsoluteUri;
                 response.ImageName = blob.Name;
@@ -44,14 +44,14 @@ namespace VolunteeringPlatform.Bll.Services
             return response;
         }
 
-        public async Task DeleteAsync(string blobFilename, string containerName)
+        public async Task DeleteAsync(string blobFilename, string containerName, CancellationToken cancellationToken)
         {
             BlobContainerClient containerClient = new BlobContainerClient(_connectionString, containerName);
             BlobClient file = containerClient.GetBlobClient(blobFilename);
             
             try
             {
-                await file.DeleteAsync();
+                await file.DeleteAsync(Azure.Storage.Blobs.Models.DeleteSnapshotsOption.None, null, cancellationToken);
             }
             catch (Exception)
             {

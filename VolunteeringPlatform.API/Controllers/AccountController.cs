@@ -64,7 +64,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [HttpPost("register/user")]
-        public async Task<IActionResult> RegisterUser([FromForm]UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> RegisterUser([FromForm]UserForRegisterDto userForRegisterDto, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +72,7 @@ namespace VolunteeringPlatform.API.Controllers
 
                 if (userForRegisterDto.Photo != null)
                 {
-                    var imageProps = await _azureStorageService.UploadAsync(userForRegisterDto.Photo, "users");
+                    var imageProps = await _azureStorageService.UploadAsync(userForRegisterDto.Photo, "users", cancellationToken);
                     user.ImageName = imageProps.ImageName;
                     user.ImageUrl = imageProps.ImageUrl;
                 }
@@ -100,7 +100,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [HttpPost("register/organization")]
-        public async Task<IActionResult> RegisterOrganization([FromForm]OrganizationForRegisterDto organizationForRegisterDto)
+        public async Task<IActionResult> RegisterOrganization([FromForm]OrganizationForRegisterDto organizationForRegisterDto, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
@@ -108,7 +108,7 @@ namespace VolunteeringPlatform.API.Controllers
 
                 if (organizationForRegisterDto.Image != null)
                 {
-                    var imageProps = await _azureStorageService.UploadAsync(organizationForRegisterDto.Image, "users");
+                    var imageProps = await _azureStorageService.UploadAsync(organizationForRegisterDto.Image, "users", cancellationToken);
                     user.ImageName = imageProps.ImageName;
                     user.ImageUrl = imageProps.ImageUrl;
                 }
@@ -136,7 +136,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [HttpPost("register/volunteer")]
-        public async Task<IActionResult> RegisterVolunteer([FromForm]VolunteerForRegisterDto volunteerForRegisterDto)
+        public async Task<IActionResult> RegisterVolunteer([FromForm]VolunteerForRegisterDto volunteerForRegisterDto, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
@@ -144,7 +144,7 @@ namespace VolunteeringPlatform.API.Controllers
 
                 if (volunteerForRegisterDto.Photo != null)
                 {
-                    var imageProps = await _azureStorageService.UploadAsync(volunteerForRegisterDto.Photo, "users");
+                    var imageProps = await _azureStorageService.UploadAsync(volunteerForRegisterDto.Photo, "users", cancellationToken);
                     user.ImageName = imageProps.ImageName;
                     user.ImageUrl = imageProps.ImageUrl;
                 }

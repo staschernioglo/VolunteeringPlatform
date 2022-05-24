@@ -21,13 +21,13 @@ namespace VolunteeringPlatform.Bll.Services
             _azureStorageService = azureStorageService;
         }
 
-        public async Task<GoodDeedDto> CreateGoodDeedAsync(GoodDeedForCreateDto goodDeedForCreateDto)
+        public async Task<GoodDeedDto> CreateGoodDeedAsync(GoodDeedForCreateDto goodDeedForCreateDto, CancellationToken cancellationToken)
         {
             var goodDeed = _mapper.Map<GoodDeed>(goodDeedForCreateDto);
             
             if (goodDeedForCreateDto.Image != null)
             {
-                var imageProps = await _azureStorageService.UploadAsync(goodDeedForCreateDto.Image, "gooddeeds");
+                var imageProps = await _azureStorageService.UploadAsync(goodDeedForCreateDto.Image, "gooddeeds", cancellationToken);
                 goodDeed.ImageName = imageProps.ImageName;
                 goodDeed.ImageUrl = imageProps.ImageUrl;
             }
@@ -37,16 +37,16 @@ namespace VolunteeringPlatform.Bll.Services
             }
 
             _repository.Add(goodDeed);
-            await _repository.SaveChangesAsync();
+            await _repository.SaveChangesAsync(cancellationToken);
 
             var goodDeedDto = _mapper.Map<GoodDeedDto>(goodDeed);
 
             return goodDeedDto;
         }
 
-        public async Task DeleteGoodDeedAsync(int id)
+        public async Task DeleteGoodDeedAsync(int id, CancellationToken cancellationToken)
         {
-            var goodDeed = await _repository.GetByIdAsync<GoodDeed>(id);
+            var goodDeed = await _repository.GetByIdAsync<GoodDeed>(id, cancellationToken);
             if (goodDeed == null)
             {
                 throw new ValidationException($"Good deed with id { id } not found");
@@ -54,31 +54,31 @@ namespace VolunteeringPlatform.Bll.Services
 
             if (goodDeed.ImageName != null)
             {
-                await _azureStorageService.DeleteAsync(goodDeed.ImageName, "gooddeeds");
+                await _azureStorageService.DeleteAsync(goodDeed.ImageName, "gooddeeds", cancellationToken);
             }
 
-            await _repository.DeleteAsync<GoodDeed>(id);
-            await _repository.SaveChangesAsync();
+            await _repository.DeleteAsync<GoodDeed>(id, cancellationToken);
+            await _repository.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<GoodDeedDto> GetGoodDeedAsync(int id)
+        public async Task<GoodDeedDto> GetGoodDeedAsync(int id, CancellationToken cancellationToken)
         {
-            var goodDeed = await _repository.GetByIdWithIncludeAsync<GoodDeed>(id, gd => gd.User);
+            var goodDeed = await _repository.GetByIdWithIncludeAsync<GoodDeed>(id, cancellationToken, gd => gd.User);
             var goodDeedDto = _mapper.Map<GoodDeedDto>(goodDeed);
             return goodDeedDto;
         }
 
-        public async Task<PaginatedResult<GoodDeedListDto>> GetPagedGoodDeedsAsync(PagedRequest pagedRequest)
+        public async Task<PaginatedResult<GoodDeedListDto>> GetPagedGoodDeedsAsync(PagedRequest pagedRequest, CancellationToken cancellationToken)
         {
-            var pagedGoodDeedsDto = await _repository.GetPagedDataAsync<GoodDeed, GoodDeedListDto>(pagedRequest);
+            var pagedGoodDeedsDto = await _repository.GetPagedDataAsync<GoodDeed, GoodDeedListDto>(pagedRequest, cancellationToken);
             return pagedGoodDeedsDto;
         }
 
-        public async Task UpdateGoodDeedAsync(int id, GoodDeedForUpdateDto goodDeedForUpdateDto)
+        public async Task UpdateGoodDeedAsync(int id, GoodDeedForUpdateDto goodDeedForUpdateDto, CancellationToken cancellationToken)
         {
-            var goodDeed = await _repository.GetByIdAsync<GoodDeed>(id);
+            var goodDeed = await _repository.GetByIdAsync<GoodDeed>(id, cancellationToken);
             _mapper.Map(goodDeedForUpdateDto, goodDeed);
-            await _repository.SaveChangesAsync();
+            await _repository.SaveChangesAsync(cancellationToken);
         }
     }
 }

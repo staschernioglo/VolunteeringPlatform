@@ -26,13 +26,13 @@ namespace VolunteeringPlatform.Bll.Services
             _azureStorageService = azureStorageService;
         }
 
-        public async Task<ProjectDto> CreateProjectAsync(ProjectForCreateDto projectForCreateDto)
+        public async Task<ProjectDto> CreateProjectAsync(ProjectForCreateDto projectForCreateDto, CancellationToken cancellationToken)
         {
             var project = _mapper.Map<Project>(projectForCreateDto);
 
             if (projectForCreateDto.Image != null)
             {
-                var imageProps = await _azureStorageService.UploadAsync(projectForCreateDto.Image, "projects");
+                var imageProps = await _azureStorageService.UploadAsync(projectForCreateDto.Image, "projects", cancellationToken);
                 project.ImageName = imageProps.ImageName;
                 project.ImageUrl = imageProps.ImageUrl;
             }
@@ -42,16 +42,16 @@ namespace VolunteeringPlatform.Bll.Services
             }
             
             _repository.Add(project);
-            await _repository.SaveChangesAsync();
+            await _repository.SaveChangesAsync(cancellationToken);
 
             var projectDto = _mapper.Map<ProjectDto>(project);
 
             return projectDto;
         }
 
-        public async Task DeleteProjectAsync(int id)
+        public async Task DeleteProjectAsync(int id, CancellationToken cancellationToken)
         {
-            var project = await _repository.GetByIdAsync<Project>(id);
+            var project = await _repository.GetByIdAsync<Project>(id, cancellationToken);
             if (project == null)
             {
                 throw new ValidationException($"Project with id { id } not found");
@@ -59,31 +59,31 @@ namespace VolunteeringPlatform.Bll.Services
 
             if (project.ImageName != null)
             {
-                await _azureStorageService.DeleteAsync(project.ImageName, "projects");
+                await _azureStorageService.DeleteAsync(project.ImageName, "projects", cancellationToken);
             }
             
-            await _repository.DeleteAsync<Project>(id);
-            await _repository.SaveChangesAsync();
+            await _repository.DeleteAsync<Project>(id, cancellationToken);
+            await _repository.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<PaginatedResult<ProjectListDto>> GetPagedProjectsAsync(PagedRequest pagedRequest)
+        public async Task<PaginatedResult<ProjectListDto>> GetPagedProjectsAsync(PagedRequest pagedRequest, CancellationToken cancellationToken)
         {
-            var pagedProjectsDto = await _repository.GetPagedDataAsync<Project, ProjectListDto>(pagedRequest);
+            var pagedProjectsDto = await _repository.GetPagedDataAsync<Project, ProjectListDto>(pagedRequest, cancellationToken);
             return pagedProjectsDto;
         }
 
-        public async Task<ProjectDto> GetProjectAsync(int id)
+        public async Task<ProjectDto> GetProjectAsync(int id, CancellationToken cancellationToken)
         {
-            var project = await _repository.GetByIdWithIncludeAsync<Project>(id, project => project.Organization);
+            var project = await _repository.GetByIdWithIncludeAsync<Project>(id, cancellationToken, project => project.Organization);
             var projectDto = _mapper.Map<ProjectDto>(project);
             return projectDto;
         }
 
-        public async Task UpdateProjectAsync(int id, ProjectForUpdateDto projectForUpdateDto)
+        public async Task UpdateProjectAsync(int id, ProjectForUpdateDto projectForUpdateDto, CancellationToken cancellationToken)
         {
-            var project = await _repository.GetByIdAsync<Project>(id);
+            var project = await _repository.GetByIdAsync<Project>(id, cancellationToken);
             _mapper.Map(projectForUpdateDto, project);
-            await _repository.SaveChangesAsync();
+            await _repository.SaveChangesAsync(cancellationToken);
         }
     }
 }

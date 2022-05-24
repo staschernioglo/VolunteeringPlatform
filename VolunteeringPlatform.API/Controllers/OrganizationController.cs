@@ -18,17 +18,17 @@ namespace VolunteeringPlatform.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("paginated-search")]
-        public async Task<PaginatedResult<OrganizationListDto>> GetPagedOrganizations(PagedRequest pagedRequest)
+        public async Task<PaginatedResult<OrganizationListDto>> GetPagedOrganizations(PagedRequest pagedRequest, CancellationToken cancellationToken)
         {
-            var pagedOrganizationsDto = await _organizationService.GetPagedOrganizationsAsync(pagedRequest);
+            var pagedOrganizationsDto = await _organizationService.GetPagedOrganizationsAsync(pagedRequest, cancellationToken);
             return pagedOrganizationsDto;
         }
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<OrganizationDto> GetOrganization(int id)
+        public async Task<OrganizationDto> GetOrganization(int id, CancellationToken cancellationToken)
         {
-            var organizationDto = await _organizationService.GetOrganizationAsync(id);
+            var organizationDto = await _organizationService.GetOrganizationAsync(id, cancellationToken);
             return organizationDto;
         }
     }

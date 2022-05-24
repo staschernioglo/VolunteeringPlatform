@@ -12,20 +12,20 @@ namespace VolunteeringPlatform.Dal.Interfaces
 {
     public interface IRepository
     {
-        Task<TEntity> GetByIdAsync<TEntity>(int id) where TEntity : class;
+        Task<TEntity> GetByIdAsync<TEntity>(int id, CancellationToken cancellationToken) where TEntity : class;
 
-        Task<TEntity> GetByIdWithIncludeAsync<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : BaseEntity;
+        Task<TEntity> GetByIdWithIncludeAsync<TEntity>(int id, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : BaseEntity;
 
-        Task<List<TEntity>> GetAllAsync<TEntity>() where TEntity : class;
+        Task<List<TEntity>> GetAllAsync<TEntity>(CancellationToken cancellationToken) where TEntity : class;
 
-        Task SaveChangesAsync();
+        Task SaveChangesAsync(CancellationToken cancellationToken);
 
         void Add<TEntity>(TEntity entity) where TEntity : class;
 
-        Task<TEntity> DeleteAsync<TEntity>(int id) where TEntity : class;
+        Task<TEntity> DeleteAsync<TEntity>(int id, CancellationToken cancellationToken) where TEntity : class;
 
-        Task<PaginatedResult<TDto>> GetPagedDataAsync<TEntity, TDto>(PagedRequest pagedRequest) where TEntity : class
+        Task<PaginatedResult<TDto>> GetPagedDataAsync<TEntity, TDto>(PagedRequest pagedRequest, CancellationToken cancellationToken) where TEntity : class
                                                                                            where TDto : class;
-        Task<TEntity> GetUserByIdWithIncludeAsync<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : User;
+        Task<TEntity> GetUserByIdWithIncludeAsync<TEntity>(int id, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : User;
     }
 }
