@@ -27,7 +27,8 @@ namespace VolunteeringPlatform.Bll.Services
 
             try
             {
-                BlobClient blob = container.GetBlobClient(Guid.NewGuid().ToString());
+                var extension = Path.GetExtension(file.FileName);
+                BlobClient blob = container.GetBlobClient($"{Guid.NewGuid()}{extension}");
             
                 await using (Stream stream = file.OpenReadStream())
                 {
