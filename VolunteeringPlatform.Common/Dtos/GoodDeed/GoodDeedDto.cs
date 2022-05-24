@@ -17,7 +17,8 @@ namespace VolunteeringPlatform.Common.Dtos.GoodDeed
         public string? Address { get; set; }
         public string? PhoneNumber { get; set; }
         public int? RequiredNumberOfVolunteers { get; set; }
-        public int NumberOfParticipatingVolunteers { get; set; } 
+        public int NumberOfParticipatingVolunteers { get; set; }
+        public string ImageUrl { get; set; }
         public int UserId { get; set; }
         public string User { get; set; }
     }

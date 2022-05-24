@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace VolunteeringPlatform.Common.Dtos.Project
 
         [Range(0, 999)]
         public int? RequiredNumberOfVolunteers { get; set; }
+        public IFormFile? Image { get; set; }
         public int OrganizationId { get; set; }
     }
 }

@@ -37,6 +37,7 @@ builder.Services.AddScoped<IRepository, BaseRepository>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IGoodDeedService, GoodDeedService>();
 builder.Services.AddScoped<IVolunteerService, VolunteerService>();
+builder.Services.AddScoped<IAzureStorageService, AzureStorageService>();
 builder.Services.AddAutoMapper(typeof(BllAssemblyMarker));
 builder.Services.AddSwagger(builder.Configuration);
 

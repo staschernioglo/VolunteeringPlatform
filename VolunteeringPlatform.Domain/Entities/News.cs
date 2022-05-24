@@ -13,6 +13,7 @@ namespace VolunteeringPlatform.Domain.Entities
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime PublicationDate { get; set; }
+        public string? ImageName { get; set; }
         public string? ImageUrl { get; set; }
     }
 }

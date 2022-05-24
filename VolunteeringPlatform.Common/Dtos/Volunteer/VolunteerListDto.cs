@@ -13,5 +13,6 @@ namespace VolunteeringPlatform.Common.Dtos.Volunteer
         public string? Locality { get; set; }
         public DateTime BirthDate { get; set; }
         public int NumberOfParticipations { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

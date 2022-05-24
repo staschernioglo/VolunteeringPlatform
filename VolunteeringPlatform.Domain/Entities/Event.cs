@@ -17,6 +17,8 @@ namespace VolunteeringPlatform.Domain.Entities
         public string? Address { get; set; }
         public DateTime? Date { get; set; }
         public TimeSpan? Time { get; set; }
+        public string? ImageName { get; set; }
+        public string? ImageUrl { get; set; }
         public int OrganizationId { get; set; }
         public virtual Organization Organization { get; set; }
     }

@@ -19,6 +19,8 @@ namespace VolunteeringPlatform.Domain.Entities
         public int? RequiredNumberOfVolunteers { get; set; }
         public int NumberOfParticipatingVolunteers { get; set; } = 0;
         public int UserId { get; set; }
+        public string? ImageName { get; set; }
+        public string? ImageUrl { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<GoodDeedVolunteer> GoodDeedVolunteers { get; set; }
     }

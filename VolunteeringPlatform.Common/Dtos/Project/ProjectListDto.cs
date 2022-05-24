@@ -18,5 +18,6 @@ namespace VolunteeringPlatform.Common.Dtos.Project
         public int? RequiredNumberOfVolunteers { get; set; }
         public int NumberOfParticipatingVolunteers { get; set; }
         public string Organization { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

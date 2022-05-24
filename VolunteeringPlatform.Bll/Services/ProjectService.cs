@@ -16,16 +16,30 @@ namespace VolunteeringPlatform.Bll.Services
     {
         private readonly IRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IAzureStorageService _azureStorageService;
 
-        public ProjectService(IRepository repository, IMapper mapper)
+        public ProjectService(IRepository repository, IMapper mapper, IAzureStorageService azureStorageService)
         {
             _repository = repository;
             _mapper = mapper;
+            _azureStorageService = azureStorageService;
         }
 
         public async Task<ProjectDto> CreateProject(ProjectForCreateDto projectForCreateDto)
         {
             var project = _mapper.Map<Project>(projectForCreateDto);
+
+            if (projectForCreateDto.Image != null)
+            {
+                var imageProps = await _azureStorageService.UploadAsync(projectForCreateDto.Image, "projects");
+                project.ImageName = imageProps.ImageName;
+                project.ImageUrl = imageProps.ImageUrl;
+            }
+            else
+            {
+                project.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/projects/default.png";
+            }
+            
             _repository.Add(project);
             await _repository.SaveChangesAsync();
 

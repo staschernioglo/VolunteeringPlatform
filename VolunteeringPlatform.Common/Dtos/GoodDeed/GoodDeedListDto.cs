@@ -14,6 +14,7 @@ namespace VolunteeringPlatform.Common.Dtos.GoodDeed
         public string? Description { get; set; }
         public DateTime? Date { get; set; }
         public string? Locality { get; set; }
+        public string ImageUrl { get; set; }
         public int? RequiredNumberOfVolunteers { get; set; }
         public int NumberOfParticipatingVolunteers { get; set; }
 

@@ -4,32 +4,35 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using VolunteeringPlatform.API.Infrastructure.Configurations;
+using VolunteeringPlatform.Bll.Interfaces;
 using VolunteeringPlatform.Common.Dtos.Account;
 using VolunteeringPlatform.Domain.Auth;
 
 namespace VolunteeringPlatform.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/account")]
     public class AccountController : BaseController
     {
         private readonly AuthOptions _authenticationOptions;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly IAzureStorageService _azureStorageService;
         private readonly IMapper _mapper;
 
-        public AccountController(IOptions<AuthOptions> authenticationOptions, SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<Role> roleManager, IMapper mapper)
+        public AccountController(IOptions<AuthOptions> authenticationOptions, SignInManager<User> signInManager,
+            UserManager<User> userManager, RoleManager<Role> roleManager, IAzureStorageService azureStorageService, IMapper mapper)
         {
             _authenticationOptions = authenticationOptions.Value;
             _signInManager = signInManager;
             _userManager = userManager;
+            _azureStorageService = azureStorageService;
             _mapper = mapper;
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
@@ -60,13 +63,23 @@ namespace VolunteeringPlatform.API.Controllers
             return Unauthorized();
         }
 
-        [AllowAnonymous]
         [HttpPost("register/user")]
         public async Task<IActionResult> RegisterUser(UserForRegisterDto userForRegisterDto)
         {
             if (ModelState.IsValid)
             {
                 User user = _mapper.Map<User>(userForRegisterDto);
+
+                if (userForRegisterDto.Photo != null)
+                {
+                    var imageProps = await _azureStorageService.UploadAsync(userForRegisterDto.Photo, "users");
+                    user.ImageName = imageProps.ImageName;
+                    user.ImageUrl = imageProps.ImageUrl;
+                }
+                else
+                {
+                    user.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/users/default.png";
+                }
 
                 var result = await _userManager.CreateAsync(user, userForRegisterDto.Password);
 
@@ -86,13 +99,23 @@ namespace VolunteeringPlatform.API.Controllers
             return Ok(userForRegisterDto);
         }
 
-        [AllowAnonymous]
         [HttpPost("register/organization")]
         public async Task<IActionResult> RegisterOrganization(OrganizationForRegisterDto organizationForRegisterDto)
         {
             if (ModelState.IsValid)
             {
                 User user = _mapper.Map<Organization>(organizationForRegisterDto);
+
+                if (organizationForRegisterDto.Image != null)
+                {
+                    var imageProps = await _azureStorageService.UploadAsync(organizationForRegisterDto.Image, "users");
+                    user.ImageName = imageProps.ImageName;
+                    user.ImageUrl = imageProps.ImageUrl;
+                }
+                else
+                {
+                    user.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/users/default.png";
+                }
 
                 var result = await _userManager.CreateAsync(user, organizationForRegisterDto.Password);
 
@@ -112,13 +135,23 @@ namespace VolunteeringPlatform.API.Controllers
             return Ok(organizationForRegisterDto);
         }
 
-        [AllowAnonymous]
         [HttpPost("register/volunteer")]
         public async Task<IActionResult> RegisterVolunteer(VolunteerForRegisterDto volunteerForRegisterDto)
         {
             if (ModelState.IsValid)
             {
                 User user = _mapper.Map<Volunteer>(volunteerForRegisterDto);
+
+                if (volunteerForRegisterDto.Photo != null)
+                {
+                    var imageProps = await _azureStorageService.UploadAsync(volunteerForRegisterDto.Photo, "users");
+                    user.ImageName = imageProps.ImageName;
+                    user.ImageUrl = imageProps.ImageUrl;
+                }
+                else
+                {
+                    user.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/users/default.png";
+                }
 
                 var result = await _userManager.CreateAsync(user, volunteerForRegisterDto.Password);
 
@@ -137,6 +170,15 @@ namespace VolunteeringPlatform.API.Controllers
             }
             return Ok(volunteerForRegisterDto);
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> CreateSomething(IFormFile file)
+        //{
+
+        //    await _azureStorageService.UploadAsync(file, "users");
+
+        //    return Ok();
+        //}
 
     }
 }

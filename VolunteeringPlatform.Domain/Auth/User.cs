@@ -14,5 +14,7 @@ namespace VolunteeringPlatform.Domain.Auth
         public string? Description { get; set; }
         public string? Locality { get; set; }
         public virtual ICollection<GoodDeed> GoodDeeds { get; set; }
+        public string? ImageName { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }

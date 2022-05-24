@@ -16,16 +16,30 @@ namespace VolunteeringPlatform.Bll.Services
     {
         private readonly IRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IAzureStorageService _azureStorageService;
 
-        public GoodDeedService(IRepository repository, IMapper mapper)
+        public GoodDeedService(IRepository repository, IMapper mapper, IAzureStorageService azureStorageService)
         {
             _repository = repository;
             _mapper = mapper;
+            _azureStorageService = azureStorageService;
         }
 
         public async Task<GoodDeedDto> CreateGoodDeed(GoodDeedForCreateDto goodDeedForCreateDto)
         {
             var goodDeed = _mapper.Map<GoodDeed>(goodDeedForCreateDto);
+            
+            if (goodDeedForCreateDto.Image != null)
+            {
+                var imageProps = await _azureStorageService.UploadAsync(goodDeedForCreateDto.Image, "projects");
+                goodDeed.ImageName = imageProps.ImageName;
+                goodDeed.ImageUrl = imageProps.ImageUrl;
+            }
+            else
+            {
+                goodDeed.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/gooddeeds/default.png";
+            }
+
             _repository.Add(goodDeed);
             await _repository.SaveChangesAsync();
 
