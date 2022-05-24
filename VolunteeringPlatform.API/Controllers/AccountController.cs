@@ -2,11 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using VolunteeringPlatform.API.Infrastructure.Configurations;
 using VolunteeringPlatform.Bll.Interfaces;
 using VolunteeringPlatform.Common.Dtos.Account;
 using VolunteeringPlatform.Domain.Auth;
@@ -17,47 +12,33 @@ namespace VolunteeringPlatform.API.Controllers
     [Route("api/account")]
     public class AccountController : BaseController
     {
-        private readonly AuthOptions _authenticationOptions;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly IAzureStorageService _azureStorageService;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-        public AccountController(IOptions<AuthOptions> authenticationOptions, SignInManager<User> signInManager,
-            UserManager<User> userManager, RoleManager<Role> roleManager, IAzureStorageService azureStorageService, IMapper mapper)
+        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager,
+            IAzureStorageService azureStorageService, IAuthenticationService authenticationService,
+            ITokenService tokenService, IMapper mapper)
         {
-            _authenticationOptions = authenticationOptions.Value;
             _signInManager = signInManager;
             _userManager = userManager;
             _azureStorageService = azureStorageService;
+            _authenticationService = authenticationService;
+            _tokenService = tokenService;
             _mapper = mapper;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
-            var checkingPasswordResult = await _signInManager.PasswordSignInAsync(userForLoginDto.Username, userForLoginDto.Password, false, false);
-
-            if (checkingPasswordResult.Succeeded)
+            var passwordSignInResult = await _authenticationService.PasswordSignInAsync(userForLoginDto.Username, userForLoginDto.Password);
+            if (passwordSignInResult)
             {
-                var user = await _userManager.FindByNameAsync(userForLoginDto.Username);
-                var userId = user.Id.ToString();
-                var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.NameId, userId) };
-
-                var signinCredentials = new SigningCredentials(_authenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
-                var jwtSecurityToken = new JwtSecurityToken(
-                     issuer: _authenticationOptions.Issuer,
-                     audience: _authenticationOptions.Audience,
-                     claims: claims,
-                     expires: DateTime.Now.AddDays(30),
-                     signingCredentials: signinCredentials
-                );
-
-                var tokenHandler = new JwtSecurityTokenHandler();
-
-                var encodedToken = tokenHandler.WriteToken(jwtSecurityToken);
-
-                return Ok(new { AccessToken = encodedToken });
+                string accessToken = await _tokenService.GenerateAccessToken(userForLoginDto.Username);
+                return Ok(new { AccessToken = accessToken });
             }
 
             return Unauthorized();
@@ -66,109 +47,118 @@ namespace VolunteeringPlatform.API.Controllers
         [HttpPost("register/user")]
         public async Task<IActionResult> RegisterUser([FromForm]UserForRegisterDto userForRegisterDto, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                User user = _mapper.Map<User>(userForRegisterDto);
-
-                if (userForRegisterDto.Photo != null)
-                {
-                    var imageProps = await _azureStorageService.UploadAsync(userForRegisterDto.Photo, "users", cancellationToken);
-                    user.ImageName = imageProps.ImageName;
-                    user.ImageUrl = imageProps.ImageUrl;
-                }
-                else
-                {
-                    user.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/users/default.png";
-                }
-
-                var result = await _userManager.CreateAsync(user, userForRegisterDto.Password);
-
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, "user");
-                    await _signInManager.SignInAsync(user, false);
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
+                return BadRequest(ModelState);
             }
-            return Ok(userForRegisterDto);
+
+            User user = _mapper.Map<User>(userForRegisterDto);
+
+            if (userForRegisterDto.Photo != null)
+            {
+                var imageProps = await _azureStorageService.UploadAsync(userForRegisterDto.Photo, "users", cancellationToken);
+                user.ImageName = imageProps.ImageName;
+                user.ImageUrl = imageProps.ImageUrl;
+            }
+            else
+            {
+                user.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/users/default.png";
+            }
+
+            var result = await _userManager.CreateAsync(user, userForRegisterDto.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "user");
+                await _signInManager.SignInAsync(user, false);
+                return Ok(userForRegisterDto);
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
         }
 
         [HttpPost("register/organization")]
         public async Task<IActionResult> RegisterOrganization([FromForm]OrganizationForRegisterDto organizationForRegisterDto, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                User user = _mapper.Map<Organization>(organizationForRegisterDto);
-
-                if (organizationForRegisterDto.Image != null)
-                {
-                    var imageProps = await _azureStorageService.UploadAsync(organizationForRegisterDto.Image, "users", cancellationToken);
-                    user.ImageName = imageProps.ImageName;
-                    user.ImageUrl = imageProps.ImageUrl;
-                }
-                else
-                {
-                    user.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/users/default.png";
-                }
-
-                var result = await _userManager.CreateAsync(user, organizationForRegisterDto.Password);
-
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, "organization");
-                    await _signInManager.SignInAsync(user, false);
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
+                return BadRequest(ModelState);
             }
-            return Ok(organizationForRegisterDto);
+            
+            User user = _mapper.Map<Organization>(organizationForRegisterDto);
+
+            if (organizationForRegisterDto.Image != null)
+            {
+                var imageProps = await _azureStorageService.UploadAsync(organizationForRegisterDto.Image, "users", cancellationToken);
+                user.ImageName = imageProps.ImageName;
+                user.ImageUrl = imageProps.ImageUrl;
+            }
+            else
+            {
+                user.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/users/default.png";
+            }
+
+            var result = await _userManager.CreateAsync(user, organizationForRegisterDto.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "organization");
+                await _signInManager.SignInAsync(user, false);
+                return Ok(organizationForRegisterDto);
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
         }
 
         [HttpPost("register/volunteer")]
         public async Task<IActionResult> RegisterVolunteer([FromForm]VolunteerForRegisterDto volunteerForRegisterDto, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                User user = _mapper.Map<Volunteer>(volunteerForRegisterDto);
-
-                if (volunteerForRegisterDto.Photo != null)
-                {
-                    var imageProps = await _azureStorageService.UploadAsync(volunteerForRegisterDto.Photo, "users", cancellationToken);
-                    user.ImageName = imageProps.ImageName;
-                    user.ImageUrl = imageProps.ImageUrl;
-                }
-                else
-                {
-                    user.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/users/default.png";
-                }
-
-                var result = await _userManager.CreateAsync(user, volunteerForRegisterDto.Password);
-
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, "volunteer");
-                    await _signInManager.SignInAsync(user, false);
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
+                return BadRequest(ModelState);
             }
-            return Ok(volunteerForRegisterDto);
+
+            User user = _mapper.Map<Volunteer>(volunteerForRegisterDto);
+
+            if (volunteerForRegisterDto.Photo != null)
+            {
+                var imageProps = await _azureStorageService.UploadAsync(volunteerForRegisterDto.Photo, "users", cancellationToken);
+                user.ImageName = imageProps.ImageName;
+                user.ImageUrl = imageProps.ImageUrl;
+            }
+            else
+            {
+                user.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/users/default.png";
+            }
+
+            var result = await _userManager.CreateAsync(user, volunteerForRegisterDto.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "volunteer");
+                await _signInManager.SignInAsync(user, false);
+                return Ok(volunteerForRegisterDto);
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
         }
     }
 }

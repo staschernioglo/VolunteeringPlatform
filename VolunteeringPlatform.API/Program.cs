@@ -38,6 +38,8 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IGoodDeedService, GoodDeedService>();
 builder.Services.AddScoped<IVolunteerService, VolunteerService>();
 builder.Services.AddScoped<IAzureStorageService, AzureStorageService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddAutoMapper(typeof(BllAssemblyMarker));
 builder.Services.AddSwagger(builder.Configuration);
 

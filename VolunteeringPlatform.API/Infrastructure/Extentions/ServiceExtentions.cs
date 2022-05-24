@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using VolunteeringPlatform.API.Infrastructure.Configurations;
+using VolunteeringPlatform.Bll.Configurations;
 
 namespace VolunteeringPlatform.API.Infrastructure.Extentions
 {

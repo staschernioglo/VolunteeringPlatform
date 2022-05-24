@@ -31,6 +31,6 @@ namespace VolunteeringPlatform.Common.Dtos.Project
 
         [DataType(DataType.Upload)]
         public IFormFile? Image { get; set; }
-        public int OrganizationId { get; set; }
+        public int? OrganizationId { get; set; }
     }
 }
