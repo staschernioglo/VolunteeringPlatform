@@ -11,5 +11,6 @@ namespace VolunteeringPlatform.Bll.Interfaces
     public interface IAzureStorageService
     {
         Task<BlobResponseDto> UploadAsync(IFormFile file, string containerName);
+        Task DeleteAsync(string blobFilename, string containerName);
     }
 }

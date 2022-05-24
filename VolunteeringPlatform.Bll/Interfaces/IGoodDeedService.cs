@@ -10,14 +10,14 @@ namespace VolunteeringPlatform.Bll.Interfaces
 {
     public interface IGoodDeedService
     {
-        Task<PaginatedResult<GoodDeedListDto>> GetPagedGoodDeeds(PagedRequest pagedRequest);
+        Task<PaginatedResult<GoodDeedListDto>> GetPagedGoodDeedsAsync(PagedRequest pagedRequest);
 
-        Task<GoodDeedDto> GetGoodDeed(int id);
+        Task<GoodDeedDto> GetGoodDeedAsync(int id);
 
-        Task<GoodDeedDto> CreateGoodDeed(GoodDeedForCreateDto goodDeedForCreateDto);
+        Task<GoodDeedDto> CreateGoodDeedAsync(GoodDeedForCreateDto goodDeedForCreateDto);
 
-        Task UpdateGoodDeed(int id, GoodDeedForUpdateDto goodDeedForUpdateDto);
+        Task UpdateGoodDeedAsync(int id, GoodDeedForUpdateDto goodDeedForUpdateDto);
 
-        Task DeleteGoodDeed(int id);
+        Task DeleteGoodDeedAsync(int id);
     }
 }

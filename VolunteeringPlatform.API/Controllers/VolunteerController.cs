@@ -23,7 +23,7 @@ namespace VolunteeringPlatform.API.Controllers
         [HttpPost("paginated-search")]
         public async Task<PaginatedResult<VolunteerListDto>> GetPagedVolunteers(PagedRequest pagedRequest)
         {
-            var pagedVolunteersDto = await _volunteerService.GetPagedVolunteers(pagedRequest);
+            var pagedVolunteersDto = await _volunteerService.GetPagedVolunteersAsync(pagedRequest);
             return pagedVolunteersDto;
         }
 
@@ -37,7 +37,7 @@ namespace VolunteeringPlatform.API.Controllers
 
             var volunteerId = User.GetLoggedInUserId();
 
-            await _volunteerService.ParticipateInProject(projectId, volunteerId);
+            await _volunteerService.ParticipateInProjectAsync(projectId, volunteerId);
             return Ok();
         }
 
@@ -51,7 +51,7 @@ namespace VolunteeringPlatform.API.Controllers
 
             var volunteerId = User.GetLoggedInUserId();
 
-            await _volunteerService.ParticipateInProject(goodDeedId, volunteerId);
+            await _volunteerService.ParticipateInProjectAsync(goodDeedId, volunteerId);
             return Ok();
         }
     }

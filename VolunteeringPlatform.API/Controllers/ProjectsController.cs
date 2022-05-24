@@ -24,7 +24,7 @@ namespace VolunteeringPlatform.API.Controllers
         [HttpPost("paginated-search")]
         public async Task<PaginatedResult<ProjectListDto>> GetPagedProjects(PagedRequest pagedRequest)
         {
-            var pagedProjectsDto = await _projectService.GetPagedProjects(pagedRequest);
+            var pagedProjectsDto = await _projectService.GetPagedProjectsAsync(pagedRequest);
             return pagedProjectsDto;
         }
 
@@ -32,12 +32,12 @@ namespace VolunteeringPlatform.API.Controllers
         [HttpGet("{id}")]
         public async Task<ProjectDto> GetProject(int id)
         {
-            var projectDto = await _projectService.GetProject(id);
+            var projectDto = await _projectService.GetProjectAsync(id);
             return projectDto;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProject(ProjectForCreateDto projectForCreateDto)
+        public async Task<IActionResult> CreateProject([FromForm]ProjectForCreateDto projectForCreateDto)
         {
             if (!ModelState.IsValid)
             {
@@ -47,7 +47,7 @@ namespace VolunteeringPlatform.API.Controllers
             var organizationId = User.GetLoggedInUserId();
             projectForCreateDto.OrganizationId = organizationId;
 
-            var projectDto = await _projectService.CreateProject(projectForCreateDto);
+            var projectDto = await _projectService.CreateProjectAsync(projectForCreateDto);
 
             return CreatedAtAction(nameof(GetProject), new { id = projectDto.Id }, projectDto);
         }
@@ -60,14 +60,14 @@ namespace VolunteeringPlatform.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _projectService.UpdateProject(id, projectForUpdateDto);
+            await _projectService.UpdateProjectAsync(id, projectForUpdateDto);
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task DeleteProject(int id)
         {
-            await _projectService.DeleteProject(id);
+            await _projectService.DeleteProjectAsync(id);
         }
     }
 }

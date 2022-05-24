@@ -23,7 +23,7 @@ namespace VolunteeringPlatform.API.Controllers
         [HttpPost("paginated-search")]
         public async Task<PaginatedResult<GoodDeedListDto>> GetPagedGoodDeeds(PagedRequest pagedRequest)
         {
-            var pagedGoodDeedsDto = await _goodDeedService.GetPagedGoodDeeds(pagedRequest);
+            var pagedGoodDeedsDto = await _goodDeedService.GetPagedGoodDeedsAsync(pagedRequest);
             return pagedGoodDeedsDto;
         }
 
@@ -31,12 +31,12 @@ namespace VolunteeringPlatform.API.Controllers
         [HttpGet("{id}")]
         public async Task<GoodDeedDto> GetGoodDeed(int id)
         {
-            var goodDeedDto = await _goodDeedService.GetGoodDeed(id);
+            var goodDeedDto = await _goodDeedService.GetGoodDeedAsync(id);
             return goodDeedDto;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGoodDeed(GoodDeedForCreateDto goodDeedForCreateDto)
+        public async Task<IActionResult> CreateGoodDeed([FromForm]GoodDeedForCreateDto goodDeedForCreateDto)
         {
             if (!ModelState.IsValid)
             {
@@ -46,7 +46,7 @@ namespace VolunteeringPlatform.API.Controllers
             var userId = User.GetLoggedInUserId();
             goodDeedForCreateDto.UserId = userId;
 
-            var goodDeedDto = await _goodDeedService.CreateGoodDeed(goodDeedForCreateDto);
+            var goodDeedDto = await _goodDeedService.CreateGoodDeedAsync(goodDeedForCreateDto);
 
             return CreatedAtAction(nameof(GetGoodDeed), new { id = goodDeedDto.Id }, goodDeedDto);
         }
@@ -59,14 +59,14 @@ namespace VolunteeringPlatform.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _goodDeedService.UpdateGoodDeed(id, goodDeedForUpdateDto);
+            await _goodDeedService.UpdateGoodDeedAsync(id, goodDeedForUpdateDto);
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task DeleteGoodDeed(int id)
         {
-            await _goodDeedService.DeleteGoodDeed(id);
+            await _goodDeedService.DeleteGoodDeedAsync(id);
         }
 
     }

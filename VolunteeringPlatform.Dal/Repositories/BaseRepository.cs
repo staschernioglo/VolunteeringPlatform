@@ -26,17 +26,17 @@ namespace VolunteeringPlatform.Dal.Repositories
             _mapper = mapper;
         }
 
-        public async Task<List<TEntity>> GetAll<TEntity>() where TEntity : class
+        public async Task<List<TEntity>> GetAllAsync<TEntity>() where TEntity : class
         {
             return await _volunteeringPlatformDbContext.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity> GetById<TEntity>(int id) where TEntity : class
+        public async Task<TEntity> GetByIdAsync<TEntity>(int id) where TEntity : class
         {
             return await _volunteeringPlatformDbContext.FindAsync<TEntity>(id);
         }
 
-        public async Task<TEntity> GetByIdWithInclude<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : BaseEntity
+        public async Task<TEntity> GetByIdWithIncludeAsync<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : BaseEntity
         {
             var query = IncludeProperties(includeProperties);
             return await query.FirstOrDefaultAsync(entity => entity.Id == id);
@@ -54,7 +54,7 @@ namespace VolunteeringPlatform.Dal.Repositories
                 .Add(entity);
         }
 
-        public async Task<TEntity> Delete<TEntity>(int id) where TEntity : class
+        public async Task<TEntity> DeleteAsync<TEntity>(int id) where TEntity : class
         {
             var entity = await _volunteeringPlatformDbContext.Set<TEntity>().FindAsync(id);
             if (entity == null)
@@ -67,7 +67,7 @@ namespace VolunteeringPlatform.Dal.Repositories
             return entity;
         }
 
-        public async Task<PaginatedResult<TDto>> GetPagedData<TEntity, TDto>(PagedRequest pagedRequest) where TEntity : class
+        public async Task<PaginatedResult<TDto>> GetPagedDataAsync<TEntity, TDto>(PagedRequest pagedRequest) where TEntity : class
                                                                                                         where TDto : class
         {
             return await _volunteeringPlatformDbContext.Set<TEntity>().CreatePaginatedResultAsync<TEntity, TDto>(pagedRequest, _mapper);
@@ -82,7 +82,7 @@ namespace VolunteeringPlatform.Dal.Repositories
             }
             return entities;
         }
-        public async Task<TEntity> GetUserByIdWithInclude<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : User
+        public async Task<TEntity> GetUserByIdWithIncludeAsync<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : User
         {
             var query = IncludeProperties(includeProperties);
             return await query.FirstOrDefaultAsync(entity => entity.Id == id);

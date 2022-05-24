@@ -20,7 +20,7 @@ namespace VolunteeringPlatform.API.Controllers
         [HttpPost("paginated-search")]
         public async Task<PaginatedResult<OrganizationListDto>> GetPagedOrganizations(PagedRequest pagedRequest)
         {
-            var pagedOrganizationsDto = await _organizationService.GetPagedOrganizations(pagedRequest);
+            var pagedOrganizationsDto = await _organizationService.GetPagedOrganizationsAsync(pagedRequest);
             return pagedOrganizationsDto;
         }
 
@@ -28,7 +28,7 @@ namespace VolunteeringPlatform.API.Controllers
         [HttpGet("{id}")]
         public async Task<OrganizationDto> GetOrganization(int id)
         {
-            var organizationDto = await _organizationService.GetOrganization(id);
+            var organizationDto = await _organizationService.GetOrganizationAsync(id);
             return organizationDto;
         }
     }

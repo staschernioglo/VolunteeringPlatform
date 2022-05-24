@@ -12,20 +12,20 @@ namespace VolunteeringPlatform.Dal.Interfaces
 {
     public interface IRepository
     {
-        Task<TEntity> GetById<TEntity>(int id) where TEntity : class;
+        Task<TEntity> GetByIdAsync<TEntity>(int id) where TEntity : class;
 
-        Task<TEntity> GetByIdWithInclude<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : BaseEntity;
+        Task<TEntity> GetByIdWithIncludeAsync<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : BaseEntity;
 
-        Task<List<TEntity>> GetAll<TEntity>() where TEntity : class;
+        Task<List<TEntity>> GetAllAsync<TEntity>() where TEntity : class;
 
         Task SaveChangesAsync();
 
         void Add<TEntity>(TEntity entity) where TEntity : class;
 
-        Task<TEntity> Delete<TEntity>(int id) where TEntity : class;
+        Task<TEntity> DeleteAsync<TEntity>(int id) where TEntity : class;
 
-        Task<PaginatedResult<TDto>> GetPagedData<TEntity, TDto>(PagedRequest pagedRequest) where TEntity : class
+        Task<PaginatedResult<TDto>> GetPagedDataAsync<TEntity, TDto>(PagedRequest pagedRequest) where TEntity : class
                                                                                            where TDto : class;
-        Task<TEntity> GetUserByIdWithInclude<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : User;
+        Task<TEntity> GetUserByIdWithIncludeAsync<TEntity>(int id, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : User;
     }
 }

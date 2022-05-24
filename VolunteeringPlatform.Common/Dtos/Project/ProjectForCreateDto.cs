@@ -28,6 +28,8 @@ namespace VolunteeringPlatform.Common.Dtos.Project
 
         [Range(0, 999)]
         public int? RequiredNumberOfVolunteers { get; set; }
+
+        [DataType(DataType.Upload)]
         public IFormFile? Image { get; set; }
         public int OrganizationId { get; set; }
     }

@@ -22,13 +22,13 @@ namespace VolunteeringPlatform.Bll.Services
 
         public async Task<BlobResponseDto> UploadAsync(IFormFile file, string containerName)
         {
-            BlobContainerClient container = new BlobContainerClient(_connectionString, containerName);
+            BlobContainerClient containerClient = new BlobContainerClient(_connectionString, containerName);
             var response = new BlobResponseDto();
 
             try
             {
                 var extension = Path.GetExtension(file.FileName);
-                BlobClient blob = container.GetBlobClient($"{Guid.NewGuid()}{extension}");
+                BlobClient blob = containerClient.GetBlobClient($"{Guid.NewGuid()}{extension}");
             
                 await using (Stream stream = file.OpenReadStream())
                 {
@@ -42,6 +42,20 @@ namespace VolunteeringPlatform.Bll.Services
             }
 
             return response;
+        }
+
+        public async Task DeleteAsync(string blobFilename, string containerName)
+        {
+            BlobContainerClient containerClient = new BlobContainerClient(_connectionString, containerName);
+            BlobClient file = containerClient.GetBlobClient(blobFilename);
+            
+            try
+            {
+                await file.DeleteAsync();
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

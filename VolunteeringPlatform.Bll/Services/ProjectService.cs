@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace VolunteeringPlatform.Bll.Services
             _azureStorageService = azureStorageService;
         }
 
-        public async Task<ProjectDto> CreateProject(ProjectForCreateDto projectForCreateDto)
+        public async Task<ProjectDto> CreateProjectAsync(ProjectForCreateDto projectForCreateDto)
         {
             var project = _mapper.Map<Project>(projectForCreateDto);
 
@@ -48,28 +49,39 @@ namespace VolunteeringPlatform.Bll.Services
             return projectDto;
         }
 
-        public async Task DeleteProject(int id)
+        public async Task DeleteProjectAsync(int id)
         {
-            await _repository.Delete<Project>(id);
+            var project = await _repository.GetByIdAsync<Project>(id);
+            if (project == null)
+            {
+                throw new ValidationException($"Project with id { id } not found");
+            }
+
+            if (project.ImageName != null)
+            {
+                await _azureStorageService.DeleteAsync(project.ImageName, "projects");
+            }
+            
+            await _repository.DeleteAsync<Project>(id);
             await _repository.SaveChangesAsync();
         }
 
-        public async Task<PaginatedResult<ProjectListDto>> GetPagedProjects(PagedRequest pagedRequest)
+        public async Task<PaginatedResult<ProjectListDto>> GetPagedProjectsAsync(PagedRequest pagedRequest)
         {
-            var pagedProjectsDto = await _repository.GetPagedData<Project, ProjectListDto>(pagedRequest);
+            var pagedProjectsDto = await _repository.GetPagedDataAsync<Project, ProjectListDto>(pagedRequest);
             return pagedProjectsDto;
         }
 
-        public async Task<ProjectDto> GetProject(int id)
+        public async Task<ProjectDto> GetProjectAsync(int id)
         {
-            var project = await _repository.GetByIdWithInclude<Project>(id, project => project.Organization);
+            var project = await _repository.GetByIdWithIncludeAsync<Project>(id, project => project.Organization);
             var projectDto = _mapper.Map<ProjectDto>(project);
             return projectDto;
         }
 
-        public async Task UpdateProject(int id, ProjectForUpdateDto projectForUpdateDto)
+        public async Task UpdateProjectAsync(int id, ProjectForUpdateDto projectForUpdateDto)
         {
-            var project = await _repository.GetById<Project>(id);
+            var project = await _repository.GetByIdAsync<Project>(id);
             _mapper.Map(projectForUpdateDto, project);
             await _repository.SaveChangesAsync();
         }

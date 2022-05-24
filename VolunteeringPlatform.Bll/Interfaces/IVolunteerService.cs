@@ -10,8 +10,8 @@ namespace VolunteeringPlatform.Bll.Interfaces
 {
     public interface IVolunteerService
     {
-        Task<PaginatedResult<VolunteerListDto>> GetPagedVolunteers(PagedRequest pagedRequest);
-        Task ParticipateInProject(int projectId, int volunteerId);
-        Task ParticipateInGoodDeed(int goodDeedId, int volunteerId);
+        Task<PaginatedResult<VolunteerListDto>> GetPagedVolunteersAsync(PagedRequest pagedRequest);
+        Task ParticipateInProjectAsync(int projectId, int volunteerId);
+        Task ParticipateInGoodDeedAsync(int goodDeedId, int volunteerId);
     }
 }

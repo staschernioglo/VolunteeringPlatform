@@ -64,7 +64,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [HttpPost("register/user")]
-        public async Task<IActionResult> RegisterUser(UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> RegisterUser([FromForm]UserForRegisterDto userForRegisterDto)
         {
             if (ModelState.IsValid)
             {
@@ -100,7 +100,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [HttpPost("register/organization")]
-        public async Task<IActionResult> RegisterOrganization(OrganizationForRegisterDto organizationForRegisterDto)
+        public async Task<IActionResult> RegisterOrganization([FromForm]OrganizationForRegisterDto organizationForRegisterDto)
         {
             if (ModelState.IsValid)
             {
@@ -136,7 +136,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [HttpPost("register/volunteer")]
-        public async Task<IActionResult> RegisterVolunteer(VolunteerForRegisterDto volunteerForRegisterDto)
+        public async Task<IActionResult> RegisterVolunteer([FromForm]VolunteerForRegisterDto volunteerForRegisterDto)
         {
             if (ModelState.IsValid)
             {
@@ -170,15 +170,5 @@ namespace VolunteeringPlatform.API.Controllers
             }
             return Ok(volunteerForRegisterDto);
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> CreateSomething(IFormFile file)
-        //{
-
-        //    await _azureStorageService.UploadAsync(file, "users");
-
-        //    return Ok();
-        //}
-
     }
 }

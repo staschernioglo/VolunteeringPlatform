@@ -10,8 +10,8 @@ namespace VolunteeringPlatform.Bll.Interfaces
 {
     public interface IOrganizationService
     {
-        Task<PaginatedResult<OrganizationListDto>> GetPagedOrganizations(PagedRequest pagedRequest);
+        Task<PaginatedResult<OrganizationListDto>> GetPagedOrganizationsAsync(PagedRequest pagedRequest);
 
-        Task<OrganizationDto> GetOrganization(int id);
+        Task<OrganizationDto> GetOrganizationAsync(int id);
     }
 }
