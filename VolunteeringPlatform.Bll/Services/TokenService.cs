@@ -24,7 +24,13 @@ namespace VolunteeringPlatform.Bll.Services
         {
             var user = await _userManager.FindByNameAsync(username);
             var userId = user.Id.ToString();
+            var roles = await _userManager.GetRolesAsync(user);
             var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.NameId, userId) };
+
+            foreach(var role in roles)
+            {
+                claims.Add(new Claim("role", role));
+            }
 
             var signinCredentials = new SigningCredentials(_authenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256);
             var jwtSecurityToken = new JwtSecurityToken(

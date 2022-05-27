@@ -27,6 +27,7 @@ namespace VolunteeringPlatform.API.Controllers
             return pagedVolunteersDto;
         }
 
+        [Authorize(Roles = "volunteer")]
         [HttpPost("{projectId}")]
         public async Task<IActionResult> ParticipateInProject(int projectId, CancellationToken cancellationToken)
         {
@@ -41,6 +42,7 @@ namespace VolunteeringPlatform.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "volunteer")]
         [HttpPost("{goodDeedId}")]
         public async Task<IActionResult> ParticipateInGoodDeed(int goodDeedId, CancellationToken cancellationToken)
         {

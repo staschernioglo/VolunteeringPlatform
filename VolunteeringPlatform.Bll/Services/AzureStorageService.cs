@@ -25,21 +25,15 @@ namespace VolunteeringPlatform.Bll.Services
             BlobContainerClient containerClient = new BlobContainerClient(_connectionString, containerName);
             var response = new BlobResponseDto();
 
-            try
+            var extension = Path.GetExtension(file.FileName);
+            BlobClient blob = containerClient.GetBlobClient($"{Guid.NewGuid()}{extension}");
+
+            await using (Stream stream = file.OpenReadStream())
             {
-                var extension = Path.GetExtension(file.FileName);
-                BlobClient blob = containerClient.GetBlobClient($"{Guid.NewGuid()}{extension}");
-            
-                await using (Stream stream = file.OpenReadStream())
-                {
-                    await blob.UploadAsync(stream, cancellationToken);
-                }
-                response.ImageUrl = blob.Uri.AbsoluteUri;
-                response.ImageName = blob.Name;
+                await blob.UploadAsync(stream, cancellationToken);
             }
-            catch (Exception) 
-            {
-            }
+            response.ImageUrl = blob.Uri.AbsoluteUri;
+            response.ImageName = blob.Name;
 
             return response;
         }
@@ -48,14 +42,8 @@ namespace VolunteeringPlatform.Bll.Services
         {
             BlobContainerClient containerClient = new BlobContainerClient(_connectionString, containerName);
             BlobClient file = containerClient.GetBlobClient(blobFilename);
-            
-            try
-            {
-                await file.DeleteAsync(Azure.Storage.Blobs.Models.DeleteSnapshotsOption.None, null, cancellationToken);
-            }
-            catch (Exception)
-            {
-            }
+
+            await file.DeleteAsync(Azure.Storage.Blobs.Models.DeleteSnapshotsOption.None, null, cancellationToken);
         }
     }
 }

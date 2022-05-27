@@ -36,6 +36,7 @@ namespace VolunteeringPlatform.API.Controllers
             return projectDto;
         }
 
+        [Authorize(Roles = "organization")]
         [HttpPost]
         public async Task<IActionResult> CreateProject([FromForm]ProjectForCreateDto projectForCreateDto, CancellationToken cancellationToken)
         {
@@ -52,6 +53,7 @@ namespace VolunteeringPlatform.API.Controllers
             return CreatedAtAction(nameof(GetProject), new { id = projectDto.Id }, projectDto);
         }
 
+        [Authorize(Roles = "organization")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProject(int id, ProjectForUpdateDto projectForUpdateDto, CancellationToken cancellationToken)
         {
@@ -64,6 +66,7 @@ namespace VolunteeringPlatform.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "organization")]
         [HttpDelete("{id}")]
         public async Task DeleteProject(int id, CancellationToken cancellationToken)
         {

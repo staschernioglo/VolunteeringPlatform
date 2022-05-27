@@ -1,17 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using VolunteeringPlatform.Common.Models.PagedRequest;
 using VolunteeringPlatform.Dal.Extentions;
 using VolunteeringPlatform.Dal.Interfaces;
 using VolunteeringPlatform.Domain.Auth;
 using VolunteeringPlatform.Domain.Entities;
+using VolunteeringPlatform.Common.Exceptions;
 
 namespace VolunteeringPlatform.Dal.Repositories
 {
