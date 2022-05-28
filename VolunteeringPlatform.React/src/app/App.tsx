@@ -10,7 +10,10 @@ import { getRole } from 'features/auth/roleDecoder';
 import setAuthorizationToken from 'features/auth/setAuthorizationToken';
 import RegistrationType from 'pages/account/signup/registrationType';
 import RegisterOrganization from 'pages/account/signup/organizationRegistration';
-import axios from 'axios';
+import RegisterVolunteer from 'pages/account/signup/volunteerRegistration';
+import RegisterSimpleUser from 'pages/account/signup/userRegistration';
+import AddProject from 'pages/projects/add-project';
+import AddGoodDeed from 'pages/gooddeeds/add-gooddeed';
 
 const AuthContext = createContext<{ isLoggedIn: boolean; setLoggedStatus: (isLoggedIn: boolean) => void; role : string | null}>({ isLoggedIn: false, setLoggedStatus: () => {}, role: null });
 export {AuthContext}
@@ -22,7 +25,6 @@ function App() {
 
   useEffect( ()=> {
     (authService.getCurrentUser()) ? setLoggedStatus(true) : setLoggedStatus(false);
-    axios.defaults.headers.post['Content-Type'] = 'application/json';
   }, []);
 
   useEffect( () => {
@@ -46,9 +48,11 @@ function App() {
           <Route path="projects" element={<Projects />} />
           <Route path="login" element={<SignIn />} />
           <Route path="signup" element={<RegistrationType />} />
-          <Route path="signup/simple" element={<Mainpage />} />
-          <Route path="signup/volunteer" element={<Mainpage />} />
+          <Route path="signup/simple" element={<RegisterSimpleUser />} />
+          <Route path="signup/volunteer" element={<RegisterVolunteer />} />
           <Route path="signup/organization" element={<RegisterOrganization />} />
+          <Route path="addproject" element={<AddProject />} />
+          <Route path="askforhelp" element={<AddGoodDeed />} />
           <Route path="*" element={<h1>ERROR 404</h1>} />
         </Route>
       </Routes>

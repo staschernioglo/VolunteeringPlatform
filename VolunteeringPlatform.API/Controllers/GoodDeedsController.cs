@@ -35,8 +35,9 @@ namespace VolunteeringPlatform.API.Controllers
             return goodDeedDto;
         }
 
+        [Authorize(Roles = "user")]
         [HttpPost]
-        public async Task<IActionResult> CreateGoodDeed(GoodDeedForCreateDto goodDeedForCreateDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateGoodDeed([FromForm]GoodDeedForCreateDto goodDeedForCreateDto, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -51,6 +52,7 @@ namespace VolunteeringPlatform.API.Controllers
             return CreatedAtAction(nameof(GetGoodDeed), new { id = goodDeedDto.Id }, goodDeedDto);
         }
 
+        [Authorize(Roles = "user")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGoodDeed(int id, GoodDeedForUpdateDto goodDeedForUpdateDto, CancellationToken cancellationToken)
         {
@@ -63,6 +65,7 @@ namespace VolunteeringPlatform.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "user")]
         [HttpDelete("{id}")]
         public async Task DeleteGoodDeed(int id, CancellationToken cancellationToken)
         {

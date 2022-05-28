@@ -38,7 +38,7 @@ namespace VolunteeringPlatform.API.Controllers
 
         [Authorize(Roles = "organization")]
         [HttpPost]
-        public async Task<IActionResult> CreateProject(ProjectForCreateDto projectForCreateDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateProject([FromForm]ProjectForCreateDto projectForCreateDto, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {

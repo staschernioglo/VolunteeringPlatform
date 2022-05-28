@@ -18,7 +18,7 @@ const OrganizationButtons = () => {
             </ListItem>
           </Link>
           <Divider />
-          <Link to="projects">
+          <Link to="addproject">
             <ListItem key="Add New Project" disablePadding>
               <ListItemButton>
                   <ListItemIcon>

@@ -20,7 +20,7 @@ const UserButtons = () => {
             </ListItem>
           </Link>
           <Divider />
-          <Link to="projects">
+          <Link to="askforhelp">
             <ListItem key="Ask for help" disablePadding>
               <ListItemButton>
                   <ListItemIcon>

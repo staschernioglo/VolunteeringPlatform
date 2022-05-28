@@ -1,14 +1,14 @@
-import { Grid, TextField, Button, Box } from '@mui/material';
+import { Grid, TextField, Button, Box, Select, MenuItem } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
-import { OrganizationRegisterDto } from 'shared/models/userModel';
-import { registerOrganization } from 'shared/api/signup/signupService';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { goodDeedcategories, GoodDeedForCreateDto } from 'shared/models/goodDeedModel';
+import { addGoodDeed } from 'shared/api/goodDeed/goodDeedService';
 
 
-const RegisterOrganization = () => {
+const AddGoodDeed = () => {
 
-  const { control, handleSubmit, formState: { errors } } = useForm<OrganizationRegisterDto>();
+  const { control, handleSubmit, formState: { errors } } = useForm<GoodDeedForCreateDto>();
   const navigate = useNavigate();
   const [file, setFile] = useState();
   
@@ -16,11 +16,11 @@ const RegisterOrganization = () => {
     setFile(e.target.files[0]);
   }
 
-  const onSubmit = async (form: OrganizationRegisterDto) => {
+  const onSubmit = async (form: GoodDeedForCreateDto) => {
     form.image = file;
-    let result = await registerOrganization(form);
+    let result = await addGoodDeed(form);
     if (result) {
-      navigate("/login");
+      navigate("/");
     }
   };
 
@@ -28,7 +28,7 @@ const RegisterOrganization = () => {
               justifyContent='center'
               textAlign='center'
               width='450px' >
-                <h1>Organization registration</h1>
+                <h1>Ask for help</h1>
     <form noValidate onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3} sx={{
         '& .MuiTextField-root': { width: '50ch' },
@@ -38,21 +38,21 @@ const RegisterOrganization = () => {
         <Grid item xs={12}>
           <Controller
             control={control}
-            name="userName"
+            name="name"
             defaultValue={''}
             rules={{
-              required: 'Username is required',
+              required: 'Name is required',
             }}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                error={errors.userName !== undefined}
+                error={errors.name !== undefined}
                 helperText={error ? error.message : null}
                 variant="outlined"
                 margin="normal"
                 required
                 type="text"
-                label="UserName"
+                label="Name"
                 autoFocus
               />
             )}
@@ -62,92 +62,28 @@ const RegisterOrganization = () => {
         <Grid item xs={12}>
           <Controller
             control={control}
-            name="email"
-            defaultValue={''}
+            name="category"
+            defaultValue={""}
             rules={{
-              required: 'Email is required',
+              required: true,
+              min: 0
             }}
-            render={({ field, fieldState: { error } }) => (
+            render={({ field }) => (
               <TextField
-                {...field}
-                error={errors.email !== undefined}
-                helperText={error ? error.message : null}
-                variant="outlined"
-                margin="normal"
+                id="outlined-select-currency"
+                select
+                label="Category"
                 required
-                type="email"
-                label="Email"
-              />
-            )}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Controller
-            control={control}
-            name="password"
-            defaultValue={''}
-            rules={{
-              required: 'Password is required',
-            }}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
                 {...field}
-                error={errors.password !== undefined}
-                helperText={error ? error.message : null}
-                variant="outlined"
-                margin="normal"
-                required
-                type="password"
-                label="Password"
-              />
-            )}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Controller
-            control={control}
-            name="confirmPassword"
-            defaultValue={''}
-            rules={{
-              required: 'Please confirm password',
-            }}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                error={errors.confirmPassword !== undefined}
-                helperText={error ? error.message : null}
-                variant="outlined"
-                margin="normal"
-                required
-                type="password"
-                label="Confirm password"
-              />
-            )}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Controller
-            control={control}
-            name="fullName"
-            defaultValue={''}
-            rules={{
-              required: 'Name is required',
-              maxLength: 50
-            }}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                error={errors.fullName !== undefined}
-                helperText={error ? error.message : null}
-                variant="outlined"
-                margin="normal"
-                required
-                type="text"
-                label="Name"
-              />
+                error={errors.category !== undefined}
+              >
+                <MenuItem value={-1} disabled><em>Select Category</em></MenuItem>
+                {
+                  goodDeedcategories.map(p => (
+                    <MenuItem key={p} value={p}>{p}</MenuItem>
+                  ))
+                }
+              </TextField>
             )}
           />
         </Grid>
@@ -160,17 +96,40 @@ const RegisterOrganization = () => {
             rules={{
               required: false,
             }}
-            render={({ field }) => (
+            render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
                 error={errors.description !== undefined}
+                helperText={error ? error.message : null}
+                variant="outlined"
+                margin="normal"
                 id="outlined-multiline-flexible"
                 multiline
                 maxRows={10}
-                variant="outlined"
-                margin="normal"
                 type="text"
                 label="Description"
+              />
+            )}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Controller
+            control={control}
+            name="date"
+            defaultValue={new Date()}
+            rules={{
+              required: false
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                error={errors.date !== undefined}
+                variant="outlined"
+                margin="normal"
+                type="date"
+                helperText="Date"
+                label=""
               />
             )}
           />
@@ -183,13 +142,14 @@ const RegisterOrganization = () => {
             defaultValue={''}
             rules={{
               required: false,
-              minLength: 3,
-              maxLength: 50
+              maxLength: 50,
+              minLength: 3
             }}
-            render={({ field }) => (
+            render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
                 error={errors.locality !== undefined}
+                helperText={error ? error.message : null}
                 variant="outlined"
                 margin="normal"
                 type="text"
@@ -205,8 +165,7 @@ const RegisterOrganization = () => {
             name="address"
             defaultValue={''}
             rules={{
-              required: false,
-              minLength: 3
+              required: false
             }}
             render={({ field }) => (
               <TextField
@@ -228,7 +187,7 @@ const RegisterOrganization = () => {
             defaultValue={''}
             rules={{
               required: false,
-              minLength: 3,
+              minLength: 5,
               maxLength: 20
             }}
             render={({ field }) => (
@@ -239,6 +198,29 @@ const RegisterOrganization = () => {
                 margin="normal"
                 type="text"
                 label="Phone Number"
+              />
+            )}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Controller
+            control={control}
+            name="requiredNumberOfvolunteers"
+            defaultValue={undefined}
+            rules={{
+              required: false,
+              min: 0,
+              max: 999
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                error={errors.requiredNumberOfvolunteers !== undefined}
+                variant="outlined"
+                margin="normal"
+                type="number"
+                label="Required number of volunteers"
               />
             )}
           />
@@ -270,8 +252,9 @@ const RegisterOrganization = () => {
             type="submit"
             variant="contained"
             color="primary"
+            sx ={{ width: 150 }}
           >
-            Register
+            Add
           </Button>
         </Grid>
       </Grid>
@@ -279,4 +262,4 @@ const RegisterOrganization = () => {
   </Box>
 }
 
-export default RegisterOrganization;
+export default AddGoodDeed;

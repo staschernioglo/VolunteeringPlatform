@@ -1,14 +1,14 @@
 import { Grid, TextField, Button, Box } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
-import { OrganizationRegisterDto } from 'shared/models/userModel';
-import { registerOrganization } from 'shared/api/signup/signupService';
+import { VolunteerRegisterDto } from 'shared/models/userModel';
+import { registerVolunteer } from 'shared/api/signup/signupService';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 
-const RegisterOrganization = () => {
+const RegisterVolunteer = () => {
 
-  const { control, handleSubmit, formState: { errors } } = useForm<OrganizationRegisterDto>();
+  const { control, handleSubmit, formState: { errors } } = useForm<VolunteerRegisterDto>();
   const navigate = useNavigate();
   const [file, setFile] = useState();
   
@@ -16,9 +16,9 @@ const RegisterOrganization = () => {
     setFile(e.target.files[0]);
   }
 
-  const onSubmit = async (form: OrganizationRegisterDto) => {
-    form.image = file;
-    let result = await registerOrganization(form);
+  const onSubmit = async (form: VolunteerRegisterDto) => {
+    form.photo = file;
+    let result = await registerVolunteer(form);
     if (result) {
       navigate("/login");
     }
@@ -28,7 +28,7 @@ const RegisterOrganization = () => {
               justifyContent='center'
               textAlign='center'
               width='450px' >
-                <h1>Organization registration</h1>
+                <h1>Volunteer registration</h1>
     <form noValidate onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3} sx={{
         '& .MuiTextField-root': { width: '50ch' },
@@ -146,7 +146,7 @@ const RegisterOrganization = () => {
                 margin="normal"
                 required
                 type="text"
-                label="Name"
+                label="Full Name"
               />
             )}
           />
@@ -155,7 +155,30 @@ const RegisterOrganization = () => {
         <Grid item xs={12}>
           <Controller
             control={control}
-            name="description"
+            name="birthDate"
+            defaultValue={new Date()}
+            rules={{
+              required: 'Date of Birth is required'
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                error={errors.birthDate !== undefined}
+                variant="outlined"
+                margin="normal"
+                type="date"
+                helperText="Date of Birth (required)"
+                required
+                label=""
+              />
+            )}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Controller
+            control={control}
+            name="personalInformation"
             defaultValue={''}
             rules={{
               required: false,
@@ -163,14 +186,14 @@ const RegisterOrganization = () => {
             render={({ field }) => (
               <TextField
                 {...field}
-                error={errors.description !== undefined}
+                error={errors.personalInformation !== undefined}
                 id="outlined-multiline-flexible"
                 multiline
                 maxRows={10}
                 variant="outlined"
                 margin="normal"
                 type="text"
-                label="Description"
+                label="Personal information"
               />
             )}
           />
@@ -202,28 +225,6 @@ const RegisterOrganization = () => {
         <Grid item xs={12}>
           <Controller
             control={control}
-            name="address"
-            defaultValue={''}
-            rules={{
-              required: false,
-              minLength: 3
-            }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                error={errors.address !== undefined}
-                variant="outlined"
-                margin="normal"
-                type="text"
-                label="Address"
-              />
-            )}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Controller
-            control={control}
             name="phoneNumber"
             defaultValue={''}
             rules={{
@@ -246,14 +247,14 @@ const RegisterOrganization = () => {
 
         <Grid item xs={12}>
         <Controller
-          name="image"
+          name="photo"
           control={control}
           render={({ field }) => (
             <TextField
                 {...field}
-                error={errors.image !== undefined}
+                error={errors.photo !== undefined}
                 variant="outlined"
-                helperText="Upload image"
+                helperText="Upload photo"
                 margin="normal"
                 type="file"
                 onChange={(e) => {
@@ -279,4 +280,4 @@ const RegisterOrganization = () => {
   </Box>
 }
 
-export default RegisterOrganization;
+export default RegisterVolunteer;
