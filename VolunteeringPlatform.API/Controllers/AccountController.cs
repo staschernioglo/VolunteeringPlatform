@@ -45,7 +45,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [HttpPost("register/user")]
-        public async Task<IActionResult> RegisterUser([FromForm]UserForRegisterDto userForRegisterDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> RegisterUser(UserForRegisterDto userForRegisterDto, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -84,7 +84,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [HttpPost("register/organization")]
-        public async Task<IActionResult> RegisterOrganization([FromForm]OrganizationForRegisterDto organizationForRegisterDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> RegisterOrganization(OrganizationForRegisterDto organizationForRegisterDto, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -123,7 +123,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [HttpPost("register/volunteer")]
-        public async Task<IActionResult> RegisterVolunteer([FromForm]VolunteerForRegisterDto volunteerForRegisterDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> RegisterVolunteer(VolunteerForRegisterDto volunteerForRegisterDto, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {

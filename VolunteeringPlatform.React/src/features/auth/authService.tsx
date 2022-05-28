@@ -1,17 +1,5 @@
 import axios from "axios";
 
-const signup = async (username: string, password: string) => {
-  const response = await axios
-        .post("https://localhost:7091/api/account/login", {
-            username,
-            password,
-        });
-    if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-    }
-    return response.data;
-  };
-
 const login = async (username: string, password: string) => {
   const response = await axios
         .post("https://localhost:7091/api/account/login", {
@@ -35,7 +23,6 @@ const getCurrentUser = () => {
 };
 
 const authService = {
-  signup,
   login,
   logout,
   getCurrentUser,

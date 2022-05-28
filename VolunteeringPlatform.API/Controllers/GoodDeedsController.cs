@@ -36,7 +36,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGoodDeed([FromForm]GoodDeedForCreateDto goodDeedForCreateDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateGoodDeed(GoodDeedForCreateDto goodDeedForCreateDto, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {

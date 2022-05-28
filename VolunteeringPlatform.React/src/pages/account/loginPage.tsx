@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -15,13 +14,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AuthContext } from "app/App";
 import { useContext } from 'react';
 import authService from 'features/auth/authService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="#">
+      <Link color="inherit" to="/">
         Volunteering Platform
       </Link>{' '}
       {new Date().getFullYear()}
@@ -43,26 +42,14 @@ export default function SignIn() {
 
     const username = data.get('email')?.toString();
     const password = data.get('password')?.toString();
+
     if (username !== undefined && password !== undefined){
       let result = await authService.login(username, password);
-      console.log("-------------- New request -------------")
-      let smth = authService.getCurrentUser();
-      console.log("CurrentUser:");
-      console.log(smth);
-      console.log("Result:");
-      console.log(result);
       if (result){
         setLoggedStatus(true);
         navigate('/');
       }
     }
-    console.log("from form");
-    console.log({
-      email: data.get('email'),
-      passwordd: data.get('password'),
-      username,
-      password,
-    });
   };
 
   return (
@@ -118,7 +105,7 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link className = "signup" to="/signup">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

@@ -21,10 +21,13 @@ import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import { Link, Outlet } from 'react-router-dom';
-import { LoginButton } from './loginButton';
+import { LoginButton } from './auth/loginButton';
 import { useContext } from 'react';
-import { LogoutButton } from './logoutButton';
+import { LogoutButton } from './auth/logoutButton';
 import { AuthContext } from "app/App";
+import { OrganizationButtons } from './auth/organizationButtons';
+import { UserButtons } from './auth/simpleUserButtons';
+import { VolunteerButtons } from './auth/volunteerButtons';
 
 const drawerWidth = 240;
 
@@ -81,7 +84,7 @@ export default function Layout() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, role } = useContext(AuthContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -173,19 +176,10 @@ export default function Layout() {
             </ListItemButton>
           </ListItem>
         </List>
+        { (role === "organization") ? <OrganizationButtons /> : <></>}
+        { (role === "volunteer") ? <VolunteerButtons /> : <></>}
+        { (role === "user") ? <UserButtons /> : <></>}
         <Divider />
-        {/* <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
