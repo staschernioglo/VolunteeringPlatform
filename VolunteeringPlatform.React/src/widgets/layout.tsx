@@ -151,22 +151,28 @@ export default function Layout() {
             </ListItem>
           </Link>
           
-          <ListItem key="Good Deeds" disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <VolunteerActivismIcon />
-              </ListItemIcon>
-              <ListItemText primary="Good Deeds" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem key="Organizations" disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <HandshakeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Organizations" />
-            </ListItemButton>
-          </ListItem>
+          <Link to="gooddeeds">
+            <ListItem key="Good Deeds" disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <VolunteerActivismIcon />
+                </ListItemIcon>
+                <ListItemText primary="Good Deeds" />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+
+          <Link to="organizations">
+            <ListItem key="Organizations" disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <HandshakeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Organizations" />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+
           <ListItem key="Volunteers" disablePadding>
             <ListItemButton>
               <ListItemIcon>

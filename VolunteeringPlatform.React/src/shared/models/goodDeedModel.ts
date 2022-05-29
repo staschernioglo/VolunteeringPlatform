@@ -12,3 +12,14 @@ export interface GoodDeedForCreateDto {
 
 export const goodDeedcategories = ['Intellectual Assistance', 'Education', 'Physical Assistance',
  'Financial Assistance', 'Social Assistance', 'Other'];
+
+ export interface GoodDeedListDto {
+    id?: number;
+    name?: string;
+    category?: string;
+    date?: Date;
+    locality?: string;
+    requiredNumberOfvolunteers?: number;
+    numberOfParticipatingVolunteers?: number;
+    imageUrl?: string;
+}

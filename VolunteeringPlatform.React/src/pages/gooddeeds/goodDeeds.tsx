@@ -13,17 +13,19 @@ import { Link } from 'react-router-dom';
 import { PagedRequest, PagedResult } from 'shared/models/pagedRequestModel';
 import { ProjectListDto } from 'shared/models/projectModel';
 import { getPagedProjects } from 'shared/api/project/projectService';
+import { GoodDeedListDto } from 'shared/models/goodDeedModel';
+import { getPagedGoodDeeds } from 'shared/api/goodDeed/goodDeedService';
 
 
 
-const Projects = () => {
+const GoodDeeds = () => {
 
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [total, setTotal] = useState<number>(0);
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc' | undefined>('desc');
     const [columnForSorting, setColumnForSorting] = useState<string>('id');
-    const [projs, setProjects] = useState<ProjectListDto[]>([{}]);
+    const [gooddeeds, setGoodDeeds] = useState<GoodDeedListDto[]>([{}]);
     var pagedRequest: PagedRequest = {
         pageIndex: page,
         pageSize: pageSize,
@@ -32,7 +34,7 @@ const Projects = () => {
     };
 
     const handlePaginationResponse = useCallback((response: PagedResult<ProjectListDto>) => {
-        setProjects([...response.items]);
+        setGoodDeeds([...response.items]);
 		setTotal(response.total);
     }, []);
 
@@ -41,7 +43,7 @@ const Projects = () => {
         pagedRequest.pageSize = pageSize;
         pagedRequest.columnNameForSorting = columnForSorting;
         pagedRequest.sortDirection = sortDirection;
-        getPagedProjects(pagedRequest).then(handlePaginationResponse);
+        getPagedGoodDeeds(pagedRequest).then(handlePaginationResponse);
     },[columnForSorting, page, pageSize, sortDirection])
 
 	const handleChangePage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
@@ -67,7 +69,7 @@ const Projects = () => {
 			justifyContent='center'
 			textAlign='center'
 			width='1000px' >
-			<h1 className='heads'>PROJECTS</h1>
+			<h1 className='heads'>GOOD DEEDS</h1>
 			<TableContainer component={Paper} sx={{ mt: 2 }}>
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">
 					<TableHead>
@@ -98,16 +100,16 @@ const Projects = () => {
 								<TableSortLabel
 									active={columnForSorting === 'organization'}
 									direction={sortDirection}
-									onClick={() => handleChangeSort('organization')}
+									onClick={() => handleChangeSort('locality')}
 								>
-									Organization
+									Locality
 								</TableSortLabel>
 							</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						{
-							projs.map((row) => (
+							gooddeeds.map((row) => (
 								<TableRow
 									key={row.id}
 									sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -119,7 +121,7 @@ const Projects = () => {
 									<TableCell sx={{ fontSize: 25 }} align="center">
 										{row.category}
 									</TableCell>
-									<TableCell sx={{ fontSize: 25 }} align="center">{row.organization}</TableCell>
+									<TableCell sx={{ fontSize: 25 }} align="center">{row.locality}</TableCell>
 								</TableRow>
 							))
 						}
@@ -140,4 +142,4 @@ const Projects = () => {
 	)
 }
 
-export { Projects };
+export { GoodDeeds };

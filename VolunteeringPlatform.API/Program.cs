@@ -36,6 +36,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IRepository, BaseRepository>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IGoodDeedService, GoodDeedService>();
+builder.Services.AddScoped<IOrganizationService, OrganizationService>();
 builder.Services.AddScoped<IVolunteerService, VolunteerService>();
 builder.Services.AddScoped<IAzureStorageService, AzureStorageService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();

@@ -55,6 +55,10 @@ a{
   margin-right: auto;
 }
 
+.heads {
+  color:rgb(74, 74, 75);
+}
+
 
 @keyframes App-logo-spin {
   from {

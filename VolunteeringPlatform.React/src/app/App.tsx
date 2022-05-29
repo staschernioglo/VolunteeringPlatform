@@ -14,6 +14,8 @@ import RegisterVolunteer from 'pages/account/signup/volunteerRegistration';
 import RegisterSimpleUser from 'pages/account/signup/userRegistration';
 import AddProject from 'pages/projects/add-project';
 import AddGoodDeed from 'pages/gooddeeds/add-gooddeed';
+import { GoodDeeds } from 'pages/gooddeeds/goodDeeds';
+import { Organizations } from 'pages/organizations/organizations';
 
 const AuthContext = createContext<{ isLoggedIn: boolean; setLoggedStatus: (isLoggedIn: boolean) => void; role : string | null}>({ isLoggedIn: false, setLoggedStatus: () => {}, role: null });
 export {AuthContext}
@@ -46,6 +48,8 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Mainpage />} />
           <Route path="projects" element={<Projects />} />
+          <Route path="gooddeeds" element={<GoodDeeds />} />
+          <Route path="organizations" element={<Organizations />} />
           <Route path="login" element={<SignIn />} />
           <Route path="signup" element={<RegistrationType />} />
           <Route path="signup/simple" element={<RegisterSimpleUser />} />
