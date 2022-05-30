@@ -9,6 +9,7 @@ import { Details } from 'widgets/details/details';
 import { AuthContext } from 'app/App';
 import { Button } from '@mui/material';
 import { participateInProject } from 'shared/api/volunteer/volunteerService';
+import { Description } from 'widgets/details/description';
 
 const ProjectPage = () => {
 
@@ -39,10 +40,8 @@ const ProjectPage = () => {
             
 			<MainInfo name={project.name} category={project.category} organization={project.organization} 
             organizationId={project.organizationId} imageUrl={project.imageUrl} />
-
-            <p className='details-text-sm bold'>Description:</p>
-            <p className='project-page-text'>{project.description}</p>
-
+            
+            { (project.description) ? <Description value={project.description} /> : <></> }
             { (project.locality) ? <Details title="Locality:" value={project.locality} /> : <></> }
             { (project.address) ? <Details title="Address:" value={project.address} /> : <></> }
             { (project.date) ? <Details title="Date:" value={new Date(project.date).toLocaleDateString() } /> : <></> }

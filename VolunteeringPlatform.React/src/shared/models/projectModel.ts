@@ -39,3 +39,9 @@ export interface ProjectDto {
     organizationId?: number;
     imageUrl?: string;
 }
+
+export interface MyProjectDto {
+    id?: number;
+    name?: string;
+    imageUrl?: string;
+}

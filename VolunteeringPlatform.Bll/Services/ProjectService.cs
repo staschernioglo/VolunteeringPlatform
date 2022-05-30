@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VolunteeringPlatform.Bll.Interfaces;
 using VolunteeringPlatform.Common.Dtos.Project;
 using VolunteeringPlatform.Common.Models.PagedRequest;
@@ -84,6 +81,13 @@ namespace VolunteeringPlatform.Bll.Services
             var project = await _repository.GetByIdAsync<Project>(id, cancellationToken);
             _mapper.Map(projectForUpdateDto, project);
             await _repository.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<List<MyProjectsListDto>> GetMyProjectsAsync(int organizationId, CancellationToken cancellationToken)
+        {
+            var projects = await _repository.GetAllWithFilter<Project>(x => x.OrganizationId == organizationId, cancellationToken);
+            var projectsDto = _mapper.Map<List<Project>, List<MyProjectsListDto>>(projects);
+            return projectsDto;
         }
     }
 }

@@ -20,7 +20,8 @@ const AddProject = () => {
     form.image = file;
     let result = await addProject(form);
     if (result) {
-      navigate("/");
+      let id = String(result.id);
+      navigate(`/projects/${id}`);
     }
   };
 
@@ -117,7 +118,7 @@ const AddProject = () => {
           <Controller
             control={control}
             name="date"
-            defaultValue={new Date()}
+            defaultValue={undefined}
             rules={{
               required: false
             }}

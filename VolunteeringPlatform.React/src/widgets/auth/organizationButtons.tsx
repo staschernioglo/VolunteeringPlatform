@@ -7,7 +7,7 @@ const OrganizationButtons = () => {
     return (
         <>
           <Divider />
-          <Link to="projects">
+          <Link to="myprojects">
             <ListItem key="My Projects" disablePadding>
               <ListItemButton>
                   <ListItemIcon>

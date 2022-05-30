@@ -19,5 +19,6 @@ namespace VolunteeringPlatform.Bll.Interfaces
         Task UpdateProjectAsync(int id, ProjectForUpdateDto projectForUpdateDto, CancellationToken cancellationToken);
 
         Task DeleteProjectAsync(int id, CancellationToken cancellationToken);
+        public Task<List<MyProjectsListDto>> GetMyProjectsAsync(int organizationId, CancellationToken cancellationToken);
     }
 }

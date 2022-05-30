@@ -1,10 +1,6 @@
 import jwt_decode from "jwt-decode";
 
 interface decode {
-    // aud: string,
-    // exp: number,
-    // iss: string,
-    // nameid: string,
     role: string
 }
 

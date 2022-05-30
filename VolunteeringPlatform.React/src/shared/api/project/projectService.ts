@@ -16,3 +16,8 @@ export async function getProject(id: number) {
     let response = await axios.get<ProjectDto>(`https://localhost:7091/api/projects/${id}`);
     return response.data;
 }
+
+export async function deleteProject(id?: number) {
+    let response = await axios.delete(`https://localhost:7091/api/projects/${id}`);
+    return response.data;
+}

@@ -21,6 +21,7 @@ namespace VolunteeringPlatform.Bll.Profiles
 
             CreateMap<ProjectForCreateDto, Project>();
             CreateMap<ProjectForUpdateDto, Project>();
+            CreateMap<Project, MyProjectsListDto>();
 
         }
     }

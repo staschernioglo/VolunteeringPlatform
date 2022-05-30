@@ -21,6 +21,11 @@ namespace VolunteeringPlatform.Dal.Interfaces
         Task SaveChangesAsync(CancellationToken cancellationToken);
 
         void Add<TEntity>(TEntity entity) where TEntity : class;
+        
+        public Task<TEntity> GetWithFilter<TEntity>(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken) where TEntity : class;
+
+        public Task<List<TEntity>> GetAllWithFilter<TEntity>(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken) where TEntity : class;
+
 
         Task<TEntity> DeleteAsync<TEntity>(int id, CancellationToken cancellationToken) where TEntity : class;
 

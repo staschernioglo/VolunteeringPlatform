@@ -37,6 +37,16 @@ namespace VolunteeringPlatform.Dal.Repositories
             return await query.FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
         }
 
+        public async Task<TEntity> GetWithFilter<TEntity>(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken) where TEntity : class
+        {
+            return await _volunteeringPlatformDbContext.Set<TEntity>().Where(filter).FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<List<TEntity>> GetAllWithFilter<TEntity>(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken) where TEntity : class
+        {
+            return await _volunteeringPlatformDbContext.Set<TEntity>().Where(filter).ToListAsync(cancellationToken);
+        }
+
         public async Task SaveChangesAsync(CancellationToken cancellationToken)
         {
             await _volunteeringPlatformDbContext.SaveChangesAsync(cancellationToken);
@@ -51,7 +61,7 @@ namespace VolunteeringPlatform.Dal.Repositories
 
         public async Task<TEntity> DeleteAsync<TEntity>(int id, CancellationToken cancellationToken) where TEntity : class
         {
-            var entity = await _volunteeringPlatformDbContext.Set<TEntity>().FindAsync(id, cancellationToken);
+            var entity = await _volunteeringPlatformDbContext.Set<TEntity>().FindAsync(id);
             if (entity == null)
             {
                 throw new ValidationException($"Object of type {typeof(TEntity)} with id { id } not found");

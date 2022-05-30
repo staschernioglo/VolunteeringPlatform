@@ -5,7 +5,7 @@ const MainInfo = (props: { imageUrl?: string; name?: string; category?: string; 
 
 	return (
 		<Box margin='auto'
-            sx={{ display: 'flex'}}>
+            sx={{ display: 'flex', ml: 5}}>
             <Box
                 component="img"
                 sx={{
@@ -14,6 +14,7 @@ const MainInfo = (props: { imageUrl?: string; name?: string; category?: string; 
                     width: 350,
                     maxHeight: { xs: 400, md: 267 },
                     maxWidth: { xs: 600, md: 400 },
+                    borderRadius: 5,
                     }}
                 alt="Project image"
                 src={props.imageUrl}

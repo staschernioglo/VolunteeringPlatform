@@ -9,12 +9,8 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { PagedRequest, PagedResult } from 'shared/models/pagedRequestModel';
 import { ProjectListDto } from 'shared/models/projectModel';
-import { getPagedProjects } from 'shared/api/project/projectService';
-import { GoodDeedListDto } from 'shared/models/goodDeedModel';
-import { getPagedGoodDeeds } from 'shared/api/goodDeed/goodDeedService';
 import { OrganizationListDto } from 'shared/models/organizationModel';
 import { getPagedOrganizations } from 'shared/api/organization/organizationService';
 
@@ -109,7 +105,18 @@ const Organizations = () => {
 									sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 								>
 									<TableCell align="center">
-										<img src = {row.imageUrl} width={250} alt="Project img" />
+										<Box
+											component="img"
+											sx={{
+												height: 267,
+												width: 400,
+												maxHeight: { xs: 267, md: 167 },
+												maxWidth: { xs: 400, md: 250 },
+												borderRadius: 3,
+												}}
+											alt="Project image"
+											src={row.imageUrl}
+										/>
 									</TableCell>
 									<TableCell sx={{ fontSize: 25 }} align="center">{row.fullName}</TableCell>
 									<TableCell sx={{ fontSize: 25 }} align="center">{row.locality}</TableCell>

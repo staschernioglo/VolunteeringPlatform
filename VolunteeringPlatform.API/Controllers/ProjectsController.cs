@@ -28,11 +28,21 @@ namespace VolunteeringPlatform.API.Controllers
             return pagedProjectsDto;
         }
 
+
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ProjectDto> GetProject(int id, CancellationToken cancellationToken)
         {
             var projectDto = await _projectService.GetProjectAsync(id, cancellationToken);
+            return projectDto;
+        }
+
+        [Authorize(Roles = "organization")]
+        [HttpGet("mine")]
+        public async Task<List<MyProjectsListDto>> GetMyProjects(CancellationToken cancellationToken)
+        {
+            var organizationId = User.GetLoggedInUserId();
+            var projectDto = await _projectService.GetMyProjectsAsync(organizationId, cancellationToken);
             return projectDto;
         }
 

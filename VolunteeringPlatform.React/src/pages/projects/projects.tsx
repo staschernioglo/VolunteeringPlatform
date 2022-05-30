@@ -113,7 +113,18 @@ const Projects = () => {
 									sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 								>
 									<TableCell align="center">
-										<img src = {row.imageUrl} width={250} alt="Project img" />
+										<Box
+											component="img"
+											sx={{
+												height: 267,
+												width: 400,
+												maxHeight: { xs: 267, md: 167 },
+												maxWidth: { xs: 400, md: 250 },
+												borderRadius: 3,
+												}}
+											alt="Project image"
+											src={row.imageUrl}
+										/>
 									</TableCell>
 									<TableCell sx={{ fontSize: 25 }} align="center">
 										<Link to={String(row.id)}>
