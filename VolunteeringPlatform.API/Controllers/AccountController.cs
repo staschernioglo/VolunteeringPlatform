@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VolunteeringPlatform.Bll.Interfaces;
 using VolunteeringPlatform.Common.Dtos.Account;
+using VolunteeringPlatform.Dal.Constants;
 using VolunteeringPlatform.Domain.Auth;
 
 namespace VolunteeringPlatform.API.Controllers
@@ -69,7 +70,7 @@ namespace VolunteeringPlatform.API.Controllers
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "user");
+                await _userManager.AddToRoleAsync(user, RoleConstants.User);
                 await _signInManager.SignInAsync(user, false);
                 return Ok(userForRegisterDto);
             }
@@ -108,7 +109,7 @@ namespace VolunteeringPlatform.API.Controllers
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "organization");
+                await _userManager.AddToRoleAsync(user, RoleConstants.Organization);
                 await _signInManager.SignInAsync(user, false);
                 return Ok(organizationForRegisterDto);
             }
@@ -147,7 +148,7 @@ namespace VolunteeringPlatform.API.Controllers
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "volunteer");
+                await _userManager.AddToRoleAsync(user, RoleConstants.Volunteer);
                 await _signInManager.SignInAsync(user, false);
                 return Ok(volunteerForRegisterDto);
             }

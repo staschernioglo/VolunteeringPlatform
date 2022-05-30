@@ -45,7 +45,7 @@ const ProjectPage = () => {
             { (project.locality) ? <Details title="Locality:" value={project.locality} /> : <></> }
             { (project.address) ? <Details title="Address:" value={project.address} /> : <></> }
             { (project.date) ? <Details title="Date:" value={new Date(project.date).toLocaleDateString() } /> : <></> }
-            { (project.requiredNumberOfvolunteers !== 0 && project.requiredNumberOfvolunteers !== undefined) ? <Details title="Required number of volunteers:" value={project.requiredNumberOfvolunteers} /> : <></> }
+            { (project.requiredNumberOfvolunteers) ? <Details title="Required number of volunteers:" value={project.requiredNumberOfvolunteers} /> : <></> }
             { (project.numberOfParticipatingVolunteers !== 0) ? <Details title="Already participating volunteers:" value={project.numberOfParticipatingVolunteers} /> : <></> }
             { (role === 'volunteer') ? <Button disabled={participation} sx={{ mt: 1, ml: 2, fontSize: 18}} onClick = {handleParticipation} variant="contained">Participate</Button> : <></>}
 		</Box>

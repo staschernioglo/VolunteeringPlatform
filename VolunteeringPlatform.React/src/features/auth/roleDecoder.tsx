@@ -12,4 +12,4 @@ const getRole = (token: string | null) => {
     return null;
 }
 
-export {getRole}
+export { getRole }

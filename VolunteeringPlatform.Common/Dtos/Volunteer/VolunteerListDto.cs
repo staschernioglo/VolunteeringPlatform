@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VolunteeringPlatform.Common.Dtos.Volunteer
+﻿namespace VolunteeringPlatform.Common.Dtos.Volunteer
 {
     public class VolunteerListDto
     {

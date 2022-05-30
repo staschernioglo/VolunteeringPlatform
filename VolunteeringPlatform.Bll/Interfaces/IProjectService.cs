@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VolunteeringPlatform.Common.Dtos.Project;
+﻿using VolunteeringPlatform.Common.Dtos.Project;
 using VolunteeringPlatform.Common.Models.PagedRequest;
 
 namespace VolunteeringPlatform.Bll.Interfaces

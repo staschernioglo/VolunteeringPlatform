@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VolunteeringPlatform.Domain.Auth;
+﻿using VolunteeringPlatform.Domain.Auth;
 
 namespace VolunteeringPlatform.Domain.Entities
 {

@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using VolunteeringPlatform.Dal.Constants;
 using VolunteeringPlatform.Domain.Auth;
 
 namespace VolunteeringPlatform.Dal.Seed
@@ -13,24 +9,24 @@ namespace VolunteeringPlatform.Dal.Seed
         public static async Task Seed(UserManager<User> userManager, RoleManager<Role> roleManager)
         {
 
-            if (await roleManager.FindByNameAsync("admin") == null)
+            if (await roleManager.FindByNameAsync(RoleConstants.Admin) == null)
             {
-                await roleManager.CreateAsync(new Role() { Name = "admin" });
+                await roleManager.CreateAsync(new Role() { Name = RoleConstants.Admin });
             }
 
-            if (await roleManager.FindByNameAsync("user") == null)
+            if (await roleManager.FindByNameAsync(RoleConstants.User) == null)
             {
-                await roleManager.CreateAsync(new Role() { Name = "user" });
+                await roleManager.CreateAsync(new Role() { Name = RoleConstants.User });
             }
 
-            if (await roleManager.FindByNameAsync("volunteer") == null)
+            if (await roleManager.FindByNameAsync(RoleConstants.Volunteer) == null)
             {
-                await roleManager.CreateAsync(new Role() { Name = "volunteer" });
+                await roleManager.CreateAsync(new Role() { Name = RoleConstants.Volunteer });
             }
 
-            if (await roleManager.FindByNameAsync("organization") == null)
+            if (await roleManager.FindByNameAsync(RoleConstants.Organization) == null)
             {
-                await roleManager.CreateAsync(new Role() { Name = "organization" });
+                await roleManager.CreateAsync(new Role() { Name = RoleConstants.Organization });
             }
             
             if (!userManager.Users.Any())
@@ -43,7 +39,7 @@ namespace VolunteeringPlatform.Dal.Seed
                 };
 
                 await userManager.CreateAsync(user, "Admin.11");
-                await userManager.AddToRoleAsync(user, "admin");
+                await userManager.AddToRoleAsync(user, RoleConstants.Admin);
             }
         }
     }

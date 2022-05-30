@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using VolunteeringPlatform.API.Infrastructure.Extentions;
 using VolunteeringPlatform.Bll.Interfaces;
 using VolunteeringPlatform.Common.Dtos.Project;
 using VolunteeringPlatform.Common.Models.PagedRequest;
-using VolunteeringPlatform.Domain.Auth;
+using VolunteeringPlatform.Dal.Constants;
 
 namespace VolunteeringPlatform.API.Controllers
 {
@@ -37,7 +35,7 @@ namespace VolunteeringPlatform.API.Controllers
             return projectDto;
         }
 
-        [Authorize(Roles = "organization")]
+        [Authorize(Roles = RoleConstants.Organization)]
         [HttpGet("mine")]
         public async Task<List<MyProjectsListDto>> GetMyProjects(CancellationToken cancellationToken)
         {
@@ -46,7 +44,7 @@ namespace VolunteeringPlatform.API.Controllers
             return projectDto;
         }
 
-        [Authorize(Roles = "organization")]
+        [Authorize(Roles = RoleConstants.Organization)]
         [HttpPost]
         public async Task<IActionResult> CreateProject([FromForm]ProjectForCreateDto projectForCreateDto, CancellationToken cancellationToken)
         {
@@ -63,7 +61,7 @@ namespace VolunteeringPlatform.API.Controllers
             return CreatedAtAction(nameof(GetProject), new { id = projectDto.Id }, projectDto);
         }
 
-        [Authorize(Roles = "organization")]
+        [Authorize(Roles = RoleConstants.Organization)]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProject(int id, ProjectForUpdateDto projectForUpdateDto, CancellationToken cancellationToken)
         {
@@ -76,7 +74,7 @@ namespace VolunteeringPlatform.API.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "organization")]
+        [Authorize(Roles = RoleConstants.Organization)]
         [HttpDelete("{id}")]
         public async Task DeleteProject(int id, CancellationToken cancellationToken)
         {

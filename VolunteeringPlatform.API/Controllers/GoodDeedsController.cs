@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VolunteeringPlatform.API.Infrastructure.Extentions;
 using VolunteeringPlatform.Bll.Interfaces;
 using VolunteeringPlatform.Common.Dtos.GoodDeed;
 using VolunteeringPlatform.Common.Models.PagedRequest;
-using VolunteeringPlatform.Domain.Auth;
+using VolunteeringPlatform.Dal.Constants;
 
 namespace VolunteeringPlatform.API.Controllers
 {
@@ -35,7 +34,7 @@ namespace VolunteeringPlatform.API.Controllers
             return goodDeedDto;
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = RoleConstants.User)]
         [HttpPost]
         public async Task<IActionResult> CreateGoodDeed([FromForm]GoodDeedForCreateDto goodDeedForCreateDto, CancellationToken cancellationToken)
         {
@@ -52,7 +51,7 @@ namespace VolunteeringPlatform.API.Controllers
             return CreatedAtAction(nameof(GetGoodDeed), new { id = goodDeedDto.Id }, goodDeedDto);
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = RoleConstants.User)]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGoodDeed(int id, GoodDeedForUpdateDto goodDeedForUpdateDto, CancellationToken cancellationToken)
         {
@@ -65,7 +64,7 @@ namespace VolunteeringPlatform.API.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = RoleConstants.User)]
         [HttpDelete("{id}")]
         public async Task DeleteGoodDeed(int id, CancellationToken cancellationToken)
         {

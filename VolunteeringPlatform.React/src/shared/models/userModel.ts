@@ -1,4 +1,3 @@
-
 export interface OrganizationRegisterDto {
     userName: string;
     email: string;

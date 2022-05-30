@@ -54,7 +54,7 @@ const Mainpage = () => {
 				</Box>
 			</Box>
 
-			<Box margin='auto' sx={{ display: 'flex', mt: 10, width: 1100, borderRadius: 5, backgroundColor: 'RebeccaPurple' }}>
+			<Box margin='auto' sx={{ display: 'flex', mt: 10, width: 1100, borderRadius: 5, backgroundColor: '#b853e0' }}>
 				
 				<Box sx={{ mt: 1, ml: 17 }} />
 					<h2 className='main-item-text'>Become a volunteer</h2>

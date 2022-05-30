@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VolunteeringPlatform.Common.Models.PagedRequest
+﻿namespace VolunteeringPlatform.Common.Models.PagedRequest
 {
     public class PagedRequest
     {

@@ -11,7 +11,7 @@ export {AuthContext}
 function App() {
 
   const [isLoggedIn, setLoggedStatus] = useState<boolean>(false);
-  const [role, setRole] = useState<any>(null);
+  const [role, setRole] = useState<string | null>(null);
 
   useEffect( ()=> {
     (authService.getCurrentUser()) ? setLoggedStatus(true) : setLoggedStatus(false);

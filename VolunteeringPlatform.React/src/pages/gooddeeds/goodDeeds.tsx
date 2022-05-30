@@ -9,12 +9,9 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { PagedRequest, PagedResult } from 'shared/models/pagedRequestModel';
 import { GoodDeedListDto } from 'shared/models/goodDeedModel';
 import { getPagedGoodDeeds } from 'shared/api/goodDeed/goodDeedService';
-
-
 
 const GoodDeeds = () => {
 
@@ -36,11 +33,15 @@ const GoodDeeds = () => {
 		setTotal(response.total);
     }, []);
 
-    useEffect( () => {
-        pagedRequest.pageIndex = page;
+	const setProperties = () => {
+		pagedRequest.pageIndex = page;
         pagedRequest.pageSize = pageSize;
         pagedRequest.columnNameForSorting = columnForSorting;
         pagedRequest.sortDirection = sortDirection;
+	}
+
+    useEffect( () => {
+		setProperties();
         getPagedGoodDeeds(pagedRequest).then(handlePaginationResponse);
     },[columnForSorting, page, pageSize, sortDirection])
 
@@ -127,9 +128,7 @@ const GoodDeeds = () => {
 										/>
 									</TableCell>
 									<TableCell sx={{ fontSize: 25 }} align="center">{row.name}</TableCell>
-									<TableCell sx={{ fontSize: 25 }} align="center">
-										{row.category}
-									</TableCell>
+									<TableCell sx={{ fontSize: 25 }} align="center">{row.category}</TableCell>
 									<TableCell sx={{ fontSize: 25 }} align="center">{row.locality}</TableCell>
 								</TableRow>
 							))

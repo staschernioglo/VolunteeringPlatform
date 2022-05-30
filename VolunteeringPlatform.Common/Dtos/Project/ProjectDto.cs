@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VolunteeringPlatform.Domain.Auth;
-using VolunteeringPlatform.Domain.Entities;
-
-namespace VolunteeringPlatform.Common.Dtos.Project
+﻿namespace VolunteeringPlatform.Common.Dtos.Project
 {
     public class ProjectDto
     {

@@ -5,6 +5,7 @@ using VolunteeringPlatform.API.Infrastructure.Extentions;
 using VolunteeringPlatform.Bll.Interfaces;
 using VolunteeringPlatform.Common.Dtos.Volunteer;
 using VolunteeringPlatform.Common.Models.PagedRequest;
+using VolunteeringPlatform.Dal.Constants;
 using VolunteeringPlatform.Domain.Auth;
 
 namespace VolunteeringPlatform.API.Controllers
@@ -27,7 +28,7 @@ namespace VolunteeringPlatform.API.Controllers
             return pagedVolunteersDto;
         }
 
-        [Authorize(Roles = "volunteer")]
+        [Authorize(Roles = RoleConstants.Volunteer)]
         [HttpPost("participateproj/{projectId}")]
         public async Task<IActionResult> ParticipateInProject(int projectId, CancellationToken cancellationToken)
         {
@@ -42,7 +43,7 @@ namespace VolunteeringPlatform.API.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "volunteer")]
+        [Authorize(Roles = RoleConstants.Volunteer)]
         [HttpPost("participategoodd/{goodDeedId}")]
         public async Task<IActionResult> ParticipateInGoodDeed(int goodDeedId, CancellationToken cancellationToken)
         {

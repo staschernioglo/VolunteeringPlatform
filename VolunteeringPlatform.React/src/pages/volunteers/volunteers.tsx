@@ -37,11 +37,15 @@ const Volunteers = () => {
 		setTotal(response.total);
     }, []);
 
-    useEffect( () => {
-        pagedRequest.pageIndex = page;
+	const setProperties = () => {
+		pagedRequest.pageIndex = page;
         pagedRequest.pageSize = pageSize;
         pagedRequest.columnNameForSorting = columnForSorting;
         pagedRequest.sortDirection = sortDirection;
+	}
+
+    useEffect( () => {
+        setProperties();
         getPagedVolunteers(pagedRequest).then(handlePaginationResponse);
     },[columnForSorting, page, pageSize, sortDirection])
 

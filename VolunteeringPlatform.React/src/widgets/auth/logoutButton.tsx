@@ -10,9 +10,6 @@ const LogoutButton = () => {
     const handleLogout = () => {
         authService.logout();
         setLoggedStatus(false);
-        let smt = authService.getCurrentUser();
-        console.log("Logout-----");
-        console.log(smt);
     }
 
     return (
