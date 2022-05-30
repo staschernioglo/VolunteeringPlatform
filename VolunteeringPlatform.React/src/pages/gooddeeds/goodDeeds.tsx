@@ -11,8 +11,6 @@ import Paper from '@mui/material/Paper';
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PagedRequest, PagedResult } from 'shared/models/pagedRequestModel';
-import { ProjectListDto } from 'shared/models/projectModel';
-import { getPagedProjects } from 'shared/api/project/projectService';
 import { GoodDeedListDto } from 'shared/models/goodDeedModel';
 import { getPagedGoodDeeds } from 'shared/api/goodDeed/goodDeedService';
 
@@ -33,7 +31,7 @@ const GoodDeeds = () => {
         columnNameForSorting: columnForSorting
     };
 
-    const handlePaginationResponse = useCallback((response: PagedResult<ProjectListDto>) => {
+    const handlePaginationResponse = useCallback((response: PagedResult<GoodDeedListDto>) => {
         setGoodDeeds([...response.items]);
 		setTotal(response.total);
     }, []);

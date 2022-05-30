@@ -173,6 +173,7 @@ export default function Layout() {
             </ListItem>
           </Link>
 
+          <Link to="volunteers">
           <ListItem key="Volunteers" disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -181,6 +182,7 @@ export default function Layout() {
               <ListItemText primary="Volunteers" />
             </ListItemButton>
           </ListItem>
+          </Link>
         </List>
         { (role === "organization") ? <OrganizationButtons /> : <></>}
         { (role === "volunteer") ? <VolunteerButtons /> : <></>}

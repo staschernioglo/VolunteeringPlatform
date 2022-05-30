@@ -34,6 +34,11 @@ namespace VolunteeringPlatform.Bll.Services
         {
             var projectVolunteer = new ProjectVolunteer() { ProjectId = projectId, VolunteerId = volunteerId };
             _repository.Add(projectVolunteer);
+            var project = await _repository.GetByIdAsync<Project>(projectId, cancellationToken);
+            if (project != null)
+            {
+                project.NumberOfParticipatingVolunteers++;
+            }
             await _repository.SaveChangesAsync(cancellationToken);
         }
 

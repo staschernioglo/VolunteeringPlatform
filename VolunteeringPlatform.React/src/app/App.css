@@ -30,7 +30,7 @@
 
 a{
   text-decoration: none;
-  color: black;
+  color: rgb(34, 34, 34);
 }
 
 .account-btn {
@@ -57,6 +57,34 @@ a{
 
 .heads {
   color:rgb(74, 74, 75);
+}
+
+.names {
+  text-transform: uppercase;
+}
+
+.project-page-title {
+	font-weight: 800;
+	font-size: 20px;
+	color: #171717;
+}
+
+.project-page-text{
+	font-weight: 500;
+	text-align: justify;
+	font-size: 18px;
+}
+
+.details-text {
+  font-size: 25px;
+}
+
+.details-text-sm {
+  font-size: 23px;
+}
+
+.bold {
+  font-weight: 700;
 }
 
 

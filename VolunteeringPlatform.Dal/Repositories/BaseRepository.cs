@@ -28,7 +28,7 @@ namespace VolunteeringPlatform.Dal.Repositories
 
         public async Task<TEntity> GetByIdAsync<TEntity>(int id, CancellationToken cancellationToken) where TEntity : class
         {
-            return await _volunteeringPlatformDbContext.FindAsync<TEntity>(id, cancellationToken);
+            return await _volunteeringPlatformDbContext.FindAsync<TEntity>(id);
         }
 
         public async Task<TEntity> GetByIdWithIncludeAsync<TEntity>(int id, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : BaseEntity

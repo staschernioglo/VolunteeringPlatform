@@ -24,3 +24,18 @@ export interface ProjectListDto {
     organization?: string;
     imageUrl?: string;
 }
+
+export interface ProjectDto {
+    id?: number;
+    name?: string;
+    category?: string;
+    description?: string;
+    date?: Date;
+    locality?: string;
+    address?: string;
+    requiredNumberOfvolunteers?: number;
+    numberOfParticipatingVolunteers?: number;
+    organization?: string;
+    organizationId?: number;
+    imageUrl?: string;
+}

@@ -28,7 +28,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [Authorize(Roles = "volunteer")]
-        [HttpPost("{projectId}")]
+        [HttpPost("participateproj/{projectId}")]
         public async Task<IActionResult> ParticipateInProject(int projectId, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
@@ -43,7 +43,7 @@ namespace VolunteeringPlatform.API.Controllers
         }
 
         [Authorize(Roles = "volunteer")]
-        [HttpPost("{goodDeedId}")]
+        [HttpPost("participategoodd/{goodDeedId}")]
         public async Task<IActionResult> ParticipateInGoodDeed(int goodDeedId, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)

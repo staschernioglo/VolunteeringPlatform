@@ -11,19 +11,20 @@ import Paper from '@mui/material/Paper';
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PagedRequest, PagedResult } from 'shared/models/pagedRequestModel';
-import { ProjectListDto } from 'shared/models/projectModel';
-import { getPagedProjects } from 'shared/api/project/projectService';
+import { VolunteerListDto } from 'shared/models/volunteerModel';
+import { getPagedVolunteers } from 'shared/api/volunteer/volunteerService';
+import { Avatar } from '@mui/material';
 
 
 
-const Projects = () => {
+const Volunteers = () => {
 
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [total, setTotal] = useState<number>(0);
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc' | undefined>('desc');
     const [columnForSorting, setColumnForSorting] = useState<string>('id');
-    const [projs, setProjects] = useState<ProjectListDto[]>([{}]);
+    const [volunteers, setVolunteers] = useState<VolunteerListDto[]>([{}]);
     var pagedRequest: PagedRequest = {
         pageIndex: page,
         pageSize: pageSize,
@@ -31,8 +32,8 @@ const Projects = () => {
         columnNameForSorting: columnForSorting
     };
 
-    const handlePaginationResponse = useCallback((response: PagedResult<ProjectListDto>) => {
-        setProjects([...response.items]);
+    const handlePaginationResponse = useCallback((response: PagedResult<VolunteerListDto>) => {
+        setVolunteers([...response.items]);
 		setTotal(response.total);
     }, []);
 
@@ -41,7 +42,7 @@ const Projects = () => {
         pagedRequest.pageSize = pageSize;
         pagedRequest.columnNameForSorting = columnForSorting;
         pagedRequest.sortDirection = sortDirection;
-        getPagedProjects(pagedRequest).then(handlePaginationResponse);
+        getPagedVolunteers(pagedRequest).then(handlePaginationResponse);
     },[columnForSorting, page, pageSize, sortDirection])
 
 	const handleChangePage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
@@ -60,14 +61,12 @@ const Projects = () => {
 		setPage(0);
 	}
 
-
-
 	return (
 		<Box margin='auto'
 			justifyContent='center'
 			textAlign='center'
-			width='1000px' >
-			<h1 className='heads'>PROJECTS</h1>
+			width='650px' >
+			<h1 className='heads'>VOLUNTEERS</h1>
 			<TableContainer component={Paper} sx={{ mt: 2 }}>
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">
 					<TableHead>
@@ -76,54 +75,32 @@ const Projects = () => {
 								<TableSortLabel>
 								</TableSortLabel>
 							</TableCell>
-							<TableCell sx={{ fontSize: 20 }} align="center">
+							<TableCell sx={{ fontSize: 20 }} align="left">
 								<TableSortLabel
-									active={columnForSorting === 'name'}
+									active={columnForSorting === 'fullName'}
 									direction={sortDirection}
-									onClick={() => handleChangeSort('name')}
+									onClick={() => handleChangeSort('fullName')}
 								>
-									Name
-								</TableSortLabel>
-							</TableCell>
-							<TableCell sx={{ fontSize: 20 }} align="center">
-								<TableSortLabel
-									active={columnForSorting === 'category'}
-									direction={sortDirection}
-									onClick={() => handleChangeSort('category')}
-								>
-									Category
-								</TableSortLabel>
-							</TableCell >
-							<TableCell sx={{ fontSize: 20 }} align="center">
-								<TableSortLabel
-									active={columnForSorting === 'organization'}
-									direction={sortDirection}
-									onClick={() => handleChangeSort('organization')}
-								>
-									Organization
+									Full Name
 								</TableSortLabel>
 							</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						{
-							projs.map((row) => (
+							volunteers.map((row) => (
 								<TableRow
 									key={row.id}
 									sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
 								>
-									<TableCell align="center">
-										<img src = {row.imageUrl} width={250} alt="Project img" />
+									<TableCell align="right">
+                                    <Avatar
+                                            alt="Volunteer's avatar"
+                                            src={row.imageUrl}
+                                            sx={{ width: 150, height: 150, ml: 7 }}
+                                            />
 									</TableCell>
-									<TableCell sx={{ fontSize: 25 }} align="center">
-										<Link to={String(row.id)}>
-										{row.name}
-										</Link>
-										</TableCell>
-									<TableCell sx={{ fontSize: 25 }} align="center">
-										{row.category}
-									</TableCell>
-									<TableCell sx={{ fontSize: 25 }} align="center">{row.organization}</TableCell>
+									<TableCell sx={{ fontSize: 25 }} align="left">{row.fullName}</TableCell>
 								</TableRow>
 							))
 						}
@@ -144,4 +121,4 @@ const Projects = () => {
 	)
 }
 
-export { Projects };
+export { Volunteers };
