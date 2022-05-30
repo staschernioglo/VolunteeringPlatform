@@ -101,7 +101,7 @@ namespace VolunteeringPlatform.API.Controllers
             }
             else
             {
-                user.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/users/default.png";
+                user.ImageUrl = "https://msdocsstoragefunc.blob.core.windows.net/projects/default.png";
             }
 
             var result = await _userManager.CreateAsync(user, organizationForRegisterDto.Password);

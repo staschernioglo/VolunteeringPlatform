@@ -87,9 +87,47 @@ a{
   font-weight: 700;
 }
 
-.img-round {
-  border-radius: 30px;
+#headerwrap {
+	background: url(https://msdocsstoragefunc.blob.core.windows.net/assets/main_back3.png) no-repeat center top;
+	margin-top: -200px;
+	padding-top: 150px;
+	text-align: center;
+	background-attachment: relative;
+	background-position: center center;
+	min-height: 400px;
+	width: 100%;
+	box-shadow: 0 0 60px 10px #bed7ea;
+	-webkit-background-size: 100%;
+	-moz-background-size: 100%;
+	-o-background-size: 100%;
+	background-size: 100%;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
+
+#headerwrap h1 {
+	color: #383c4f;
+	padding-top: 20px;
+	padding-bottom: 300px;
+	letter-spacing: 4px;
+	font-size: 50px;
+	font-weight: bold;
+}
+
+.main-text-block {
+	padding-bottom: 70px;
+	padding-top: 30px;
+}
+
+.main-item-text {
+  font-size: 40px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+}
+
 
 
 @keyframes App-logo-spin {
