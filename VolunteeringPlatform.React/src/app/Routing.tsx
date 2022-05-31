@@ -15,6 +15,7 @@ import { Organizations } from 'pages/organizations/organizations';
 import { Volunteers } from 'pages/volunteers/volunteers';
 import { ProjectPage } from 'pages/projects/projectPage';
 import { MyProjects } from 'pages/projects/organizationProjects';
+import { ParticipantsList } from 'pages/projects/participantsList';
 
 
 function Routing() {
@@ -26,6 +27,7 @@ function Routing() {
           <Route index element={<Mainpage />} />
           <Route path="projects" element={<Projects />} />
           <Route path="projects/:id" element={<ProjectPage />} />
+          <Route path="projects/:id/:nid" element={<ParticipantsList />} />
           <Route path="myprojects" element={<MyProjects />} />
           <Route path="gooddeeds" element={<GoodDeeds />} />
           <Route path="organizations" element={<Organizations />} />

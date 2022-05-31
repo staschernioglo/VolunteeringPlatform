@@ -14,7 +14,6 @@ namespace VolunteeringPlatform.API.Infrastructure.Middlewares
 
         public async Task InvokeAsync(HttpContext httpContext, VolunteeringPlatformDbContext dbContext)
         {
-            // For HTTP GET opening transaction is not required
             if (httpContext.Request.Method == HttpMethod.Get.Method)
             {
                 await _next(httpContext);
@@ -25,7 +24,6 @@ namespace VolunteeringPlatform.API.Infrastructure.Middlewares
             {
                 await _next(httpContext);
 
-                //Commit transaction if all commands succeed, transaction will auto-rollback when disposed if either commands fails
                 await dbContext.Database.CommitTransactionAsync();
             }
 

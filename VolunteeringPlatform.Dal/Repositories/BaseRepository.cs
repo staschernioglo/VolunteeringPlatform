@@ -92,5 +92,11 @@ namespace VolunteeringPlatform.Dal.Repositories
             var query = IncludeProperties(includeProperties);
             return await query.FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
         }
+
+        public async Task<List<TEntity>> GetAllWithFilterAndInclude<TEntity>(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : class
+        {
+            var query = IncludeProperties(includeProperties);
+            return await query.Where(filter).ToListAsync(cancellationToken);
+        }
     }
 }

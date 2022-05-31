@@ -27,5 +27,7 @@ namespace VolunteeringPlatform.Dal.Interfaces
         Task<PaginatedResult<TDto>> GetPagedDataAsync<TEntity, TDto>(PagedRequest pagedRequest, CancellationToken cancellationToken) where TEntity : class
                                                                                            where TDto : class;
         Task<TEntity> GetUserByIdWithIncludeAsync<TEntity>(int id, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : User;
+
+        public Task<List<TEntity>> GetAllWithFilterAndInclude<TEntity>(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken, params Expression<Func<TEntity, object>>[] includeProperties) where TEntity : class;
     }
 }

@@ -70,7 +70,7 @@ const Projects = () => {
 		<Box margin='auto'
 			justifyContent='center'
 			textAlign='center'
-			width='1000px' >
+			width='1100px' >
 			<h1 className='heads'>PROJECTS</h1>
 			<TableContainer component={Paper} sx={{ mt: 2 }}>
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">

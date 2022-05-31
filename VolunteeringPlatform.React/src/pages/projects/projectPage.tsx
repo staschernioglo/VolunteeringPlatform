@@ -10,6 +10,7 @@ import { AuthContext } from 'app/App';
 import { Button } from '@mui/material';
 import { participateInProject } from 'shared/api/volunteer/volunteerService';
 import { Description } from 'widgets/details/description';
+import { Participants } from 'widgets/details/participants';
 
 const ProjectPage = () => {
 
@@ -46,7 +47,7 @@ const ProjectPage = () => {
             { (project.address) ? <Details title="Address:" value={project.address} /> : <></> }
             { (project.date) ? <Details title="Date:" value={new Date(project.date).toLocaleDateString() } /> : <></> }
             { (project.requiredNumberOfvolunteers) ? <Details title="Required number of volunteers:" value={project.requiredNumberOfvolunteers} /> : <></> }
-            { (project.numberOfParticipatingVolunteers !== 0) ? <Details title="Already participating volunteers:" value={project.numberOfParticipatingVolunteers} /> : <></> }
+            { (project.numberOfParticipatingVolunteers !== 0) ? <Participants id = {project.id} title="Already participating volunteers:" value={project.numberOfParticipatingVolunteers} /> : <></> }
             { (role === 'volunteer') ? <Button disabled={participation} sx={{ mt: 1, ml: 2, fontSize: 18}} onClick = {handleParticipation} variant="contained">Participate</Button> : <></>}
 		</Box>
 	)

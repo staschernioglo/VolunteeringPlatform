@@ -18,6 +18,9 @@ namespace VolunteeringPlatform.Bll.Profiles
             CreateMap<ProjectForUpdateDto, Project>();
             CreateMap<Project, MyProjectsListDto>();
 
+            CreateMap<ProjectVolunteer, ProjectVolunteerListDto>()
+                .ForMember(x => x.FullName, y => y.MapFrom(s => s.Volunteer.FullName))
+                .ForMember(x => x.ImageUrl, y => y.MapFrom(s => s.Volunteer.ImageUrl));
         }
     }
 }

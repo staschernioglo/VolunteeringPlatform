@@ -8,9 +8,12 @@ export async function getPagedVolunteers(pagedRequest: PagedRequest) {
 }
 
 export async function participateInProject(projectId?: number) {
-    console.log(`projectId = ${projectId}`);
-    console.log(typeof(projectId));
     let response = await axios.post(`https://localhost:7091/api/volunteers/participateproj/${projectId}`, projectId );
+    return response.data;
+}
+
+export async function getParticipants(id?: number) {
+    let response = await axios.get(`https://localhost:7091/api/projectvolunteers/${id}`);
     return response.data;
 }
 
