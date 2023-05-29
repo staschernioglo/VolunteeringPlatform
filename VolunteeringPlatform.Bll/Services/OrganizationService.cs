@@ -10,7 +10,6 @@ namespace VolunteeringPlatform.Bll.Services
     public class OrganizationService : IOrganizationService
     {
         private readonly IRepository _repository;
-        
         private readonly IMapper _mapper;
 
         public OrganizationService(IRepository repository, IMapper mapper)
