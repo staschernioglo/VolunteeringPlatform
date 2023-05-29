@@ -16,7 +16,7 @@ namespace VolunteeringPlatform.Bll.Services
         {
             _repository = repository;
             _mapper = mapper;
-        }
+        } 
 
         public async Task<OrganizationDto> GetOrganizationAsync(int id, CancellationToken cancellationToken)
         {
