@@ -79,7 +79,6 @@ namespace VolunteeringPlatform.Bll.Services
             var project = await _repository.GetByIdAsync<Project>(id, cancellationToken);
             _mapper.Map(projectForUpdateDto, project);
             await _repository.SaveChangesAsync(cancellationToken);
-            
         }
 
         public async Task<List<MyProjectsListDto>> GetMyProjectsAsync(int organizationId, CancellationToken cancellationToken)
