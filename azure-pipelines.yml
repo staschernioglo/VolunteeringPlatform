@@ -7,8 +7,7 @@ trigger:
 - master
 
 pool:
-  name: DESKTOP-VGLN2P9 
-  vmImage: 'windows-latest'
+  name: 'DESKTOP-VGLN2P9'
 
 variables:
   solution: '**/*.sln'
