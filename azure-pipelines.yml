@@ -50,7 +50,7 @@ steps:
   inputs:
     command: 'custom'
     custom: 'ef'
-    arguments: 'migrations script --output $(Build.SourcesDirectory)/SQL/tododbscript.sql --idempotent --project $(Build.SourcesDirectory)/src/VolunteeringPlatform.Dal.csproj --context VolunteeringPlatformDbContext'
+    arguments: 'migrations script --output $(Build.SourcesDirectory)/SQL/tododbscript.sql --idempotent --project $(Build.SourcesDirectory)/VolunteeringPlatform.Dal.csproj --context VolunteeringPlatformDbContext'
 
 - task: PublishBuildArtifacts@1
   inputs:
