@@ -24,6 +24,7 @@ namespace VolunteeringPlatform.API.Controllers
         {
             var pagedProjectsDto = await _projectService.GetPagedProjectsAsync(pagedRequest, cancellationToken);
             return pagedProjectsDto;
+
         }
 
 
