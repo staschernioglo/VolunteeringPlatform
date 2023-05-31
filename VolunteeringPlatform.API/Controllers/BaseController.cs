@@ -8,4 +8,5 @@ namespace VolunteeringPlatform.API.Controllers
     public abstract class BaseController : ControllerBase
     {
     }
+
 }
